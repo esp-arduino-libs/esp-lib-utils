@@ -1,4 +1,8 @@
-[![Arduino Lint](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/arduino_lint.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/arduino_lint.yml) [![pre-commit](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/pre-commit.yml) [![Build Test Apps](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/build_test.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/build_test.yml)
+[![Arduino Lint](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/arduino_lint.yml/badge.svg)](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/arduino_lint.yml) [![pre-commit](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/pre-commit.yml) [![Build Test Apps](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/build_test.yml/badge.svg)](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/build_test.yml) [![Version Consistency](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/check_lib_versions.yml/badge.svg)](https://github.com/esp-arduino-libs/esp-lib-utils/actions/workflows/check_lib_versions.yml)
+
+**Latest Arduino Library Version**: [![GitHub Release](https://img.shields.io/github/v/release/esp-arduino-libs/esp-lib-utils)](https://github.com/esp-arduino-libs/esp-lib-utils/releases)
+
+**Latest Espressif Component Version**: [![Espressif Release](https://components.espressif.com/components/espressif/esp-lib-utils/badge.svg)](https://components.espressif.com/components/espressif/esp-lib-utils)
 
 # ESP Library Utils
 
