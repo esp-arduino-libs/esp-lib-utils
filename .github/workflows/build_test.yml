@@ -9,13 +9,13 @@ jobs:
   build:
     strategy:
       matrix:
-        idf_ver: ["v4.4.5", "v5.0"]
-        idf_target: ["esp32"]
+        idf_ver: ["release-v5.1", "release-v5.2", "release-v5.3"]
+        idf_target: ["esp32", "esp32s3"]
     runs-on: ubuntu-20.04
     container: espressif/idf:${{ matrix.idf_ver }}
     steps:
       - uses: actions/checkout@v3
-      - name: Build ESP_Knob Test Application
+      - name: Build Test Application
         env:
           IDF_TARGET: ${{ matrix.idf_target }}
         working-directory: test_apps
@@ -26,3 +26,5 @@ jobs:
           export EXTRA_CFLAGS="${PEDANTIC_FLAGS} -Wstrict-prototypes"
           export EXTRA_CXXFLAGS="${PEDANTIC_FLAGS}"
           idf.py build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions" build

@@ -1,38 +1,40 @@
 [![Arduino Lint](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/arduino_lint.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/arduino_lint.yml) [![pre-commit](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/pre-commit.yml) [![Build Test Apps](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/build_test.yml/badge.svg)](https://github.com/esp-arduino-libs/[xxx]/actions/workflows/build_test.yml)
 
-# [xxx]
+# ESP Library Utils
 
-[xxx] is an Arduino library designed for driving [xxx] using ESP SoCs.
-
-[xxx] encapsulates the component from the [Espressif Components Registry](https://components.espressif.com/). It is developed based on [arduino-esp32](https://github.com/espressif/arduino-esp32) and can be easily downloaded and integrated into the Arduino IDE.
-
-## Features
-
-* [xxx]
-
-## Supported Drivers
-
-|                             **Driver**                             | **Version** |
-| ------------------------------------------------------------------ | ----------- |
-| [xxx](https://components.espressif.com/components/espressif/xxx) |        |
-
-## Dependencies Version
-
-|                          **Name**                           | **Version** |
-| ----------------------------------------------------------- | ----------- |
-| [xxx]                                                  | v0.x.x      |
-| [arduino-esp32](https://github.com/espressif/arduino-esp32) | >= [xxx]   |
+esp-lib-utils is a library designed for ESP SoCs to provide utility functions, including `logging`, `memory management`, and `checking`.
 
 ## How to Use
 
-For information on how to use the library in the Arduino IDE, please refer to the documentation for [Arduino IDE v1.x.x](https://docs.arduino.cc/software/ide-v1/tutorials/installing-libraries) or [Arduino IDE v2.x.x](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-installing-a-library).
-
-### Examples
-
-* [xxx](examples/xxx): Demonstrates how to use [xxx] and test all functions.
-
-### Detailed Usage
-
 ```cpp
-    [xxx]
+// Define the log tag for the current library, should be declared before `esp_utils_library.h`
+#define ESP_UTILS_LOG_TAG "MyLibrary"
+#include "esp_utils_library.h"
+
+void test_log(void)
+{
+    ESP_UTILS_LOG_TRACE_ENTER();
+
+    ESP_UTILS_LOGD("This is a debug message");
+    ESP_UTILS_LOGI("This is an info message");
+    ESP_UTILS_LOGW("This is a warning message");
+    ESP_UTILS_LOGE("This is an error message");
+
+    ESP_UTILS_LOG_TRACE_EXIT();
+}
+
+void test_memory(void)
+{
+    // Allocate memory in C style (`malloc/calloc` and `free` are re-defined by the library)
+    int *c_ptr = (int *)malloc(sizeof(int));
+    ESP_UTILS_CHECK_NULL_EXIT(c_ptr, "Failed to allocate memory");
+    free(c_ptr);
+
+    // Allocate memory in C++ style
+    std::shared_ptr<int> cxx_ptr = nullptr;
+    ESP_UTILS_CHECK_EXCEPTION_EXIT(
+        (cxx_ptr = esp_utils::make_shared<int>()), "Failed to allocate memory"
+    );
+    cxx_ptr = nullptr;
+}
 ```
