@@ -1,7 +1,7 @@
 # ChangeLog
 
-## v0.0.1 - [xxx]
+## v0.1.0
 
 ###  Enhancements:
 
-* [xxx]
+* feat(repo): initialize with modules 'check', 'log' and 'utils'
