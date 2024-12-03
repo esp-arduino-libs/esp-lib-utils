@@ -6,33 +6,33 @@
 #pragma once
 
 #include "sdkconfig.h"
-#include "esp_utils_config_internal.h"
+#include "esp_utils_conf_internal.h"
 
 #ifdef __cplusplus
 
 #include <memory>
 #include <cstdlib>
 
-extern "C" void *esp_utils_memory_malloc(size_t size);
-extern "C" void esp_utils_memory_free(void *p);
+extern "C" void *esp_utils_mem_gen_malloc(size_t size);
+extern "C" void esp_utils_mem_gen_free(void *p);
 
 namespace esp_utils {
 
 template <typename T>
-struct MemoryAllocator {
+struct GeneralMemoryAllocator {
     using value_type = T;
 
-    MemoryAllocator() = default;
+    GeneralMemoryAllocator() = default;
 
     template <typename U>
-    MemoryAllocator(const MemoryAllocator<U> &) {}
+    GeneralMemoryAllocator(const GeneralMemoryAllocator<U> &) {}
 
     T *allocate(std::size_t n)
     {
         if (n == 0) {
             return nullptr;
         }
-        void *ptr = esp_utils_memory_malloc(n * sizeof(T));
+        void *ptr = esp_utils_mem_gen_malloc(n * sizeof(T));
 #if CONFIG_COMPILER_CXX_EXCEPTIONS
         if (ptr == nullptr) {
             throw std::bad_alloc();
@@ -43,7 +43,7 @@ struct MemoryAllocator {
 
     void deallocate(T *p, std::size_t n)
     {
-        esp_utils_memory_free(p);
+        esp_utils_mem_gen_free(p);
     }
 
     template <typename U, typename... Args>
@@ -66,15 +66,15 @@ struct MemoryAllocator {
 template <typename T, typename... Args>
 std::shared_ptr<T> make_shared(Args &&... args)
 {
-    return std::allocate_shared<T, MemoryAllocator<T>>(MemoryAllocator<T>(), std::forward<Args>(args)...);
+    return std::allocate_shared<T, GeneralMemoryAllocator<T>>(GeneralMemoryAllocator<T>(), std::forward<Args>(args)...);
 }
 
 } // namespace esp_utils
 
 #else
 
-void *esp_utils_memory_malloc(size_t size);
-void esp_utils_memory_free(void *p);
+void *esp_utils_mem_gen_malloc(size_t size);
+void esp_utils_mem_gen_free(void *p);
 
 #endif // __cplusplus
 
@@ -85,8 +85,8 @@ void esp_utils_memory_free(void *p);
 #undef malloc
 #undef free
 #undef calloc
-#define malloc(size)    esp_utils_memory_malloc(size)
-#define free(ptr)       esp_utils_memory_free(ptr)
+#define malloc(size)    esp_utils_mem_gen_malloc(size)
+#define free(ptr)       esp_utils_mem_gen_free(ptr)
 #define calloc(n, size)                \
     ({                              \
         size_t _size = (size_t)n * size;  \

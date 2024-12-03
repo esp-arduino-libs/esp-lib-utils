@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include "esp_err.h"
-#include "esp_utils_config_internal.h"
+#include "esp_utils_conf_internal.h"
 #include "log/esp_utils_log.h"
 
-#if !ESP_UTILS_ENABLE_CHECK
+#if !ESP_UTILS_CONF_ENABLE_CHECK
 
 #ifndef ESP_UTILS_CHECK_TAG
 #define ESP_UTILS_CHECK_TAG(goto_tag)
@@ -33,7 +33,7 @@
 
 #else
 
-#if ESP_UTILS_CHECK_WITH_ASSERT
+#if ESP_UTILS_CONF_CHECK_WITH_ASSERT
 
 #ifndef ESP_UTILS_CHECK_TAG
 #define ESP_UTILS_CHECK_TAG(goto_tag)
@@ -87,7 +87,7 @@
 #define ESP_UTILS_CHECK_TAG(goto_tag)  goto_tag:
 #endif
 
-#if ESP_UTILS_CHECK_WITH_ERROR_LOG
+#if ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG
 
 /**
  * @brief Check if the pointer is NULL; if NULL, log an error and return the specified value.
@@ -202,8 +202,9 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_GOTO(x, goto_tag, fmt, ...) do { \
-            if (unlikely((x) != ESP_OK)) {                   \
-                ESP_UTILS_LOGE(fmt, ##__VA_ARGS__);            \
+            esp_err_t err = (x);                        \
+            if (unlikely((err) != ESP_OK)) {                   \
+                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
                 goto goto_tag;                              \
             }                                               \
         } while(0)
@@ -216,8 +217,9 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_EXIT(x, fmt, ...) do { \
-            if (unlikely((x) != ESP_OK)) {                   \
-                ESP_UTILS_LOGE(fmt, ##__VA_ARGS__);  \
+            esp_err_t err = (x);                        \
+            if (unlikely((err) != ESP_OK)) {                   \
+                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
                 return;                           \
             }                                     \
         } while(0)
@@ -262,7 +264,13 @@
 #else
 
 #define ESP_UTILS_CHECK_EXCEPTION_RETURN(x, ret, fmt, ...)      (x)
-#define ESP_UTILS_CHECK_EXCEPTION_GOTO(x, goto_tag, fmt, ...)   (x)
+#define ESP_UTILS_CHECK_EXCEPTION_GOTO(x, goto_tag, fmt, ...) do {\
+            x; \
+            /* Aoivd unused tag warning */ \
+            if (0) { \
+                goto goto_tag; \
+            } \
+    } while (0)
 #define ESP_UTILS_CHECK_EXCEPTION_EXIT(x, fmt, ...)             (x)
 
 #endif // CONFIG_COMPILER_CXX_EXCEPTIONS
@@ -420,6 +428,6 @@
     } while (0)
 #endif // __cplusplus
 
-#endif // ESP_UTILS_CHECK_WITH_ERROR_LOG
-#endif // ESP_UTILS_CHECK_WITH_ASSERT
-#endif // ESP_UTILS_ENABLE_CHECK
+#endif // ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG
+#endif // ESP_UTILS_CONF_CHECK_WITH_ASSERT
+#endif // ESP_UTILS_CONF_ENABLE_CHECK
