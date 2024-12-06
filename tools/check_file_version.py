@@ -16,21 +16,21 @@ internal_version_macross = [
         },
     },
     {
-        'file': 'esp_utils_config.h',
+        'file': 'esp_utils_conf.h',
         'macro': {
-            'major': 'ESP_UTILS_CONFIG_VERSION_MAJOR',
-            'minor': 'ESP_UTILS_CONFIG_VERSION_MINOR',
-            'patch': 'ESP_UTILS_CONFIG_VERSION_PATCH'
+            'major': 'ESP_UTILS_CONF_VERSION_MAJOR',
+            'minor': 'ESP_UTILS_CONF_VERSION_MINOR',
+            'patch': 'ESP_UTILS_CONF_VERSION_PATCH'
         },
     },
 ]
 file_version_macros = [
     {
-        'file': 'esp_utils_config.h',
+        'file': 'esp_utils_conf.h',
         'macro': {
-            'major': 'ESP_UTILS_CONFIG_FILE_VERSION_MAJOR',
-            'minor': 'ESP_UTILS_CONFIG_FILE_VERSION_MINOR',
-            'patch': 'ESP_UTILS_CONFIG_FILE_VERSION_PATCH'
+            'major': 'ESP_UTILS_CONF_FILE_VERSION_MAJOR',
+            'minor': 'ESP_UTILS_CONF_FILE_VERSION_MINOR',
+            'patch': 'ESP_UTILS_CONF_FILE_VERSION_PATCH'
         },
     },
 ]

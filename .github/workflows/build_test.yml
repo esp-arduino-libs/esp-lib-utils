@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        idf_ver: ["release-v5.1", "release-v5.2", "release-v5.3"]
+        idf_ver:    ["release-v5.1", "release-v5.2", "release-v5.3"]
         idf_target: ["esp32", "esp32s3"]
     runs-on: ubuntu-20.04
     container: espressif/idf:${{ matrix.idf_ver }}
@@ -28,3 +28,7 @@ jobs:
           idf.py build
           rm -rf sdkconfig build managed_components dependencies.lock
           idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions" build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions;sdkconfig.ci.esp_mem" build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions;sdkconfig.ci.custom_mem" build
