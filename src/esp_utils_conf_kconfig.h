@@ -11,51 +11,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// Check Configurations /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Check functions related.
- *
- */
-#ifndef ESP_UTILS_CONF_ENABLE_CHECK
-    #ifdef CONFIG_ESP_UTILS_CONF_ENABLE_CHECK
-        #define ESP_UTILS_CONF_ENABLE_CHECK   CONFIG_ESP_UTILS_CONF_ENABLE_CHECK
+#ifndef ESP_UTILS_CONF_CHECK_HANDLE_METHOD
+    #ifdef CONFIG_ESP_UTILS_CONF_CHECK_HANDLE_METHOD
+        #define ESP_UTILS_CONF_CHECK_HANDLE_METHOD   CONFIG_ESP_UTILS_CONF_CHECK_HANDLE_METHOD
     #else
-        #define ESP_UTILS_CONF_ENABLE_CHECK   (0)
-    #endif
-#endif
-#ifndef ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG
-    #ifdef CONFIG_ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG
-        #define ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG   CONFIG_ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG
-    #else
-        #define ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG   (0)
-    #endif
-#endif
-#ifndef ESP_UTILS_CONF_CHECK_WITH_ASSERT
-    #ifdef CONFIG_ESP_UTILS_CONF_CHECK_WITH_ASSERT
-        #define ESP_UTILS_CONF_CHECK_WITH_ASSERT   CONFIG_ESP_UTILS_CONF_CHECK_WITH_ASSERT
-    #else
-        #define ESP_UTILS_CONF_CHECK_WITH_ASSERT   (0)
+        #define ESP_UTILS_CONF_CHECK_HANDLE_METHOD   (ESP_UTILS_CHECK_HANDLE_WITH_ERROR_LOG)
     #endif
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// LOG Configurations //////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef ESP_UTILS_CONF_ENABLE_LOG
-    #ifdef CONFIG_ESP_UTILS_CONF_ENABLE_LOG
-        #define ESP_UTILS_CONF_ENABLE_LOG            CONFIG_ESP_UTILS_CONF_ENABLE_LOG
-    #else
-        #define ESP_UTILS_CONF_ENABLE_LOG            (0)
-    #endif
-#endif
-
-#ifndef ESP_UTILS_CONF_LOG_BUFFER_SIZE
-    #ifdef CONFIG_ESP_UTILS_CONF_LOG_BUFFER_SIZE
-        #define ESP_UTILS_CONF_LOG_BUFFER_SIZE       CONFIG_ESP_UTILS_CONF_LOG_BUFFER_SIZE
-    #else
-        #define ESP_UTILS_CONF_LOG_BUFFER_SIZE       (256)
-    #endif
-#endif
-
 #ifndef ESP_UTILS_CONF_LOG_LEVEL
     #ifdef CONFIG_ESP_UTILS_CONF_LOG_LEVEL
         #define ESP_UTILS_CONF_LOG_LEVEL      CONFIG_ESP_UTILS_CONF_LOG_LEVEL
@@ -69,6 +35,14 @@
         #define ESP_UTILS_CONF_ENABLE_LOG_TRACE      CONFIG_ESP_UTILS_CONF_ENABLE_LOG_TRACE
     #else
         #define ESP_UTILS_CONF_ENABLE_LOG_TRACE      0
+    #endif
+#endif
+
+#ifndef ESP_UTILS_CONF_LOG_BUFFER_SIZE
+    #ifdef CONFIG_ESP_UTILS_CONF_LOG_BUFFER_SIZE
+        #define ESP_UTILS_CONF_LOG_BUFFER_SIZE       CONFIG_ESP_UTILS_CONF_LOG_BUFFER_SIZE
+    #else
+        #define ESP_UTILS_CONF_LOG_BUFFER_SIZE       (256)
     #endif
 #endif
 

@@ -33,11 +33,13 @@ struct GeneralMemoryAllocator {
             return nullptr;
         }
         void *ptr = esp_utils_mem_gen_malloc(n * sizeof(T));
-#if CONFIG_COMPILER_CXX_EXCEPTIONS
         if (ptr == nullptr) {
+#if CONFIG_COMPILER_CXX_EXCEPTIONS
             throw std::bad_alloc();
-        }
+#else
+            abort();
 #endif // CONFIG_COMPILER_CXX_EXCEPTIONS
+        }
         return static_cast<T *>(ptr);
     }
 

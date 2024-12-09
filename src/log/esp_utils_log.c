@@ -6,12 +6,13 @@
 #include <string.h>
 #include "esp_utils_conf_internal.h"
 
-#if ESP_UTILS_CONF_ENABLE_LOG
 /**
  * @brief  Extract filename from file path
  *
  * @param  file_path File path
+ *
  * @return File name
+ *
  */
 const char *esp_utils_log_extract_file_name(const char *file_path)
 {
@@ -22,4 +23,3 @@ const char *esp_utils_log_extract_file_name(const char *file_path)
 
     return filename ? filename + 1 : file_path;
 }
-#endif // ESP_UTILS_CONF_ENABLE_LOG

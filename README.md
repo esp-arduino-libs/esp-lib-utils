@@ -104,21 +104,17 @@ Since `esp-lib-utils` configures its functionality through the *esp_utils_conf.h
 
 ```c
 ...
-/* Set to 1 if use `ESP_UTILS_LOG*()` macros */
-#define ESP_UTILS_CONF_ENABLE_LOG               (1)         // 0/1
-#if ESP_UTILS_CONF_ENABLE_LOG
-    /**
-     * Global log level, logs with a level lower than this will not be compiled. Choose one of the following:
-     *  - ESP_UTILS_LOG_LEVEL_DEBUG:   Extra information which is not necessary for normal use (values, pointers, sizes, etc)
-     *                                 (lowest level)
-     *  - ESP_UTILS_LOG_LEVEL_INFO:    Information messages which describe the normal flow of events
-     *  - ESP_UTILS_LOG_LEVEL_WARNING: Error conditions from which recovery measures have been taken
-     *  - ESP_UTILS_LOG_LEVEL_ERROR:   Critical errors, software module cannot recover on its own (highest level)
-     *
-     */
-    #define ESP_UTILS_CONF_LOG_LEVEL            (ESP_UTILS_LOG_LEVEL_DEBUG)
-    ...
-#endif // ESP_UTILS_CONF_ENABLE_LOG
+/**
+ * Global log level, logs with a level lower than this will not be compiled. Choose one of the following:
+ *  - ESP_UTILS_LOG_LEVEL_DEBUG:   Extra information which is not necessary for normal use (values, pointers, sizes, etc)
+ *                                 (lowest level)
+ *  - ESP_UTILS_LOG_LEVEL_INFO:    Information messages which describe the normal flow of events
+ *  - ESP_UTILS_LOG_LEVEL_WARNING: Error conditions from which recovery measures have been taken
+ *  - ESP_UTILS_LOG_LEVEL_ERROR:   Critical errors, software module cannot recover on its own
+ *  - ESP_UTILS_LOG_LEVEL_NONE:    No log output (highest level) (Minimum code size)
+ *
+ */
+#define ESP_UTILS_CONF_LOG_LEVEL            (ESP_UTILS_LOG_LEVEL_DEBUG)
 ...
 ```
 
@@ -166,10 +162,10 @@ bool test_check_false_goto(void)
     ESP_UTILS_CHECK_FALSE_GOTO(true, err, "Check false goto failed");
     ESP_UTILS_CHECK_FALSE_GOTO(false, end, "Check false goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 
@@ -191,10 +187,10 @@ bool test_check_error_goto(void)
     ESP_UTILS_CHECK_ERROR_GOTO(ESP_OK, err, "Check error goto failed");
     ESP_UTILS_CHECK_ERROR_GOTO(ESP_FAIL, end, "Check error goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 
@@ -216,10 +212,10 @@ static bool test_check_null_goto(void)
     ESP_UTILS_CHECK_NULL_GOTO((void *)1, err, "Check null goto failed");
     ESP_UTILS_CHECK_NULL_GOTO(NULL, end, "Check null goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 

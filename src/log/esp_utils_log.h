@@ -36,7 +36,6 @@ public:
         return instance;
     }
 
-#if ESP_UTILS_CONF_ENABLE_LOG
     // Templates and conditional compilation: Filter logs by different levels
     template <int level>
     void print(const char *file, int line, const char *func, const char *format, ...)
@@ -44,7 +43,7 @@ public:
         // Logs below the global level will not be compiled
         if constexpr (level >= ESP_UTILS_CONF_LOG_LEVEL) {
             // Mutex to avoid interleaved log messages
-            _mutex.lock();
+            std::lock_guard<std::mutex> lock(_mutex);
             // Use variadic arguments for formatted output
             va_list args;
             va_start(args, format);
@@ -55,19 +54,12 @@ public:
                 "[%c][%s][%s:%04d](%s): %s\n", logLevelToChar(level), ESP_UTILS_LOG_TAG,
                 esp_utils_log_extract_file_name(file), line, func, _buffer
             );
-            _mutex.unlock();
         }
     }
-#else
-    // When logging is disabled, the `print` function has an empty implementation
-    template <int level>
-    void print(const char *, int, const char *, const char *, ...) const {}
-#endif /* ESP_UTILS_CONF_ENABLE_LOG */
 
 private:
     Log() = default;
 
-#if ESP_UTILS_CONF_ENABLE_LOG
     // Convert log level to string
     static constexpr char logLevelToChar(int level)
     {
@@ -83,7 +75,6 @@ private:
 
     char _buffer[ESP_UTILS_CONF_LOG_BUFFER_SIZE];
     std::mutex _mutex;
-#endif
 };
 
 } // namespace esp_utils
@@ -145,17 +136,10 @@ const char *esp_utils_log_extract_file_name(const char *file_path);
  * Macros to simplify logging calls
  *
  */
-#if ESP_UTILS_CONF_ENABLE_LOG
 #define ESP_UTILS_LOGD(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_DEBUG,   format, ##__VA_ARGS__)
 #define ESP_UTILS_LOGI(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_INFO,    format, ##__VA_ARGS__)
 #define ESP_UTILS_LOGW(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_WARNING, format, ##__VA_ARGS__)
 #define ESP_UTILS_LOGE(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_ERROR,   format, ##__VA_ARGS__)
-#else
-#define ESP_UTILS_LOGD(...)
-#define ESP_UTILS_LOGI(...)
-#define ESP_UTILS_LOGW(...)
-#define ESP_UTILS_LOGE(...)
-#endif // ESP_UTILS_CONF_ENABLE_LOG
 
 #endif // __cplusplus
 
