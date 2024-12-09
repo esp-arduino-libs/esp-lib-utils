@@ -12,49 +12,37 @@
 ///////////////////////////////////////////////// Check Configurations /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
- * These functions are used to check the function parameters, return value, etc. Disable them will reduce the code size.
+ * Check handle method, choose one of the following:
+ *  - ESP_UTILS_CHECK_HANDLE_WITH_NONE:      Do nothing when check failed (Minimum code size)
+ *  - ESP_UTILS_CHECK_HANDLE_WITH_ERROR_LOG: Print error message when check failed (Recommended)
+ *  - ESP_UTILS_CHECK_HANDLE_WITH_ASSERT:    Assert when check failed
  *
  */
-/* Set to 1 if use `ESP_UTILS_CHECK_*()` macros */
-#define ESP_UTILS_CONF_ENABLE_CHECK             (1)         // 0/1
-#if ESP_UTILS_CONF_ENABLE_CHECK
-    /* Set to 1 if print message when check failed */
-    #define ESP_UTILS_CONF_CHECK_WITH_ERROR_LOG (1)         // 0/1
-
-    /* Set to 1 if assert when check failed */
-    #define ESP_UTILS_CONF_CHECK_WITH_ASSERT    (0)         // 0/1
-#endif // ESP_UTILS_CONF_ENABLE_CHECK
+#define ESP_UTILS_CONF_CHECK_HANDLE_METHOD  (ESP_UTILS_CHECK_HANDLE_WITH_ERROR_LOG)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// Log Configurations //////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
- * These functions are used to print log messages. Disable them will reduce the code size.
+ * Global log level, logs with a level lower than this will not be compiled. Choose one of the following:
+ *  - ESP_UTILS_LOG_LEVEL_DEBUG:   Extra information which is not necessary for normal use (values, pointers, sizes, etc)
+ *                                 (lowest level)
+ *  - ESP_UTILS_LOG_LEVEL_INFO:    Information messages which describe the normal flow of events
+ *  - ESP_UTILS_LOG_LEVEL_WARNING: Error conditions from which recovery measures have been taken
+ *  - ESP_UTILS_LOG_LEVEL_ERROR:   Critical errors, software module cannot recover on its own
+ *  - ESP_UTILS_LOG_LEVEL_NONE:    No log output (highest level) (Minimum code size)
  *
  */
-/* Set to 1 if use `ESP_UTILS_LOG*()` macros */
-#define ESP_UTILS_CONF_ENABLE_LOG               (1)         // 0/1
-#if ESP_UTILS_CONF_ENABLE_LOG
-    /**
-     * Global log level, logs with a level lower than this will not be compiled. Choose one of the following:
-     *  - ESP_UTILS_LOG_LEVEL_DEBUG:   Extra information which is not necessary for normal use (values, pointers, sizes, etc)
-     *                                 (lowest level)
-     *  - ESP_UTILS_LOG_LEVEL_INFO:    Information messages which describe the normal flow of events
-     *  - ESP_UTILS_LOG_LEVEL_WARNING: Error conditions from which recovery measures have been taken
-     *  - ESP_UTILS_LOG_LEVEL_ERROR:   Critical errors, software module cannot recover on its own (highest level)
-     *
-     */
-    #define ESP_UTILS_CONF_LOG_LEVEL            (ESP_UTILS_LOG_LEVEL_INFO)
-    #if ESP_UTILS_CONF_LOG_LEVEL == ESP_UTILS_LOG_LEVEL_DEBUG
+#define ESP_UTILS_CONF_LOG_LEVEL            (ESP_UTILS_LOG_LEVEL_INFO)
+#if ESP_UTILS_CONF_LOG_LEVEL == ESP_UTILS_LOG_LEVEL_DEBUG
 
-        /* Set to 1 if print trace log messages when enter/exit functions, useful for debugging */
-        #define ESP_UTILS_CONF_ENABLE_LOG_TRACE (0)
+    /* Set to 1 if print trace log messages when enter/exit functions, useful for debugging */
+    #define ESP_UTILS_CONF_ENABLE_LOG_TRACE (0)
 
-    #endif // ESP_UTILS_CONF_LOG_LEVEL
+#endif // ESP_UTILS_CONF_LOG_LEVEL
 
-    /* Log format buffer size */
-    #define ESP_UTILS_CONF_LOG_BUFFER_SIZE      (256)
-#endif // ESP_UTILS_CONF_ENABLE_LOG
+/* Log format buffer size */
+#define ESP_UTILS_CONF_LOG_BUFFER_SIZE      (256)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////// Memory Configurations /////////////////////////////////////////////////
@@ -96,8 +84,8 @@
  *   3. Even if the patch version is not consistent, it will not affect normal functionality.
  *
  */
-#define ESP_UTILS_CONF_FILE_VERSION_MAJOR 0
-#define ESP_UTILS_CONF_FILE_VERSION_MINOR 1
+#define ESP_UTILS_CONF_FILE_VERSION_MAJOR 1
+#define ESP_UTILS_CONF_FILE_VERSION_MINOR 0
 #define ESP_UTILS_CONF_FILE_VERSION_PATCH 0
 
 // *INDENT-OFF*

@@ -49,10 +49,10 @@ TEST_CASE("Test memory functions on cpp", "[utils][memory][CPP]")
         ESP_UTILS_LOGI("Malloced value: %d", bad_ptr->buffer[0]);
     }
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     TEST_ASSERT(false && "Memory allocation failed");
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return;
 }
 
@@ -71,12 +71,12 @@ static bool test_check_false_goto(void)
     ESP_UTILS_CHECK_FALSE_GOTO(true, err, "Check false goto failed");
     ESP_UTILS_CHECK_FALSE_GOTO(false, end, "Check false goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     TEST_ASSERT(false && "Check false goto failed");
 
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 
@@ -105,12 +105,12 @@ static bool test_check_error_goto(void)
     ESP_UTILS_CHECK_ERROR_GOTO(ESP_OK, err, "Check error goto failed");
     ESP_UTILS_CHECK_ERROR_GOTO(ESP_FAIL, end, "Check error goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     TEST_ASSERT(false && "Check error goto failed");
 
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 
@@ -139,12 +139,12 @@ static bool test_check_null_goto(void)
     ESP_UTILS_CHECK_NULL_GOTO((void *)1, err, "Check null goto failed");
     ESP_UTILS_CHECK_NULL_GOTO(NULL, end, "Check null goto success");
 
-    ESP_UTILS_CHECK_TAG(err)
+err:
     TEST_ASSERT(false && "Check null goto failed");
 
     return false;
 
-    ESP_UTILS_CHECK_TAG(end)
+end:
     return true;
 }
 
