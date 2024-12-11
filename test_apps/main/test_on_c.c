@@ -24,6 +24,8 @@ TEST_CASE("Test log functions on C", "[utils][log][C]")
 
 TEST_CASE("Test memory functions on C", "[utils][memory][C]")
 {
+    TEST_ASSERT_TRUE_MESSAGE(esp_utils_mem_print_info(), "Print memory info failed");
+
     char *good_ptr = (char *)calloc(1, MALLOC_GOOD_SIZE);
     ESP_UTILS_CHECK_NULL_GOTO(good_ptr, err, "Failed to allocate memory size: %d", MALLOC_GOOD_SIZE);
     ESP_UTILS_LOGI("Malloced value: %d", good_ptr[0]);
