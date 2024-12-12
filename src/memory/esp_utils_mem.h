@@ -5,16 +5,27 @@
  */
 #pragma once
 
+#include <stdbool.h>
+#include <stdlib.h>
 #include "sdkconfig.h"
 #include "esp_utils_conf_internal.h"
 
 #ifdef __cplusplus
+extern "C" {
+#endif
+
+void *esp_utils_mem_gen_malloc(size_t size);
+void esp_utils_mem_gen_free(void *p);
+void *esp_utils_mem_gen_calloc(size_t n, size_t size);
+bool esp_utils_mem_print_info(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 
 #include <memory>
-#include <cstdlib>
-
-extern "C" void *esp_utils_mem_gen_malloc(size_t size);
-extern "C" void esp_utils_mem_gen_free(void *p);
 
 namespace esp_utils {
 
@@ -73,11 +84,6 @@ std::shared_ptr<T> make_shared(Args &&... args)
 
 } // namespace esp_utils
 
-#else
-
-void *esp_utils_mem_gen_malloc(size_t size);
-void esp_utils_mem_gen_free(void *p);
-
 #endif // __cplusplus
 
 /**
@@ -88,13 +94,5 @@ void esp_utils_mem_gen_free(void *p);
 #undef free
 #undef calloc
 #define malloc(size)    esp_utils_mem_gen_malloc(size)
-#define free(ptr)       esp_utils_mem_gen_free(ptr)
-#define calloc(n, size)                \
-    ({                              \
-        size_t _size = (size_t)n * size;  \
-        void *p = malloc(_size);    \
-        if (p != NULL) {         \
-            memset(p, 0, _size); \
-        }                           \
-        p;                          \
-    })
+#define free(p)         esp_utils_mem_gen_free(p)
+#define calloc(n, size) esp_utils_mem_gen_calloc(n, size)
