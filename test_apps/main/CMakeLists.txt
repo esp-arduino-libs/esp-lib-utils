@@ -3,19 +3,20 @@ idf_component_register(
     WHOLE_ARCHIVE
 )
 
-    idf_build_get_property(build_components BUILD_COMPONENTS)
-    foreach(COMPONENT ${build_components})
-        if(COMPONENT MATCHES "esp-lib-utils" OR COMPONENT MATCHES "espressif__esp-lib-utils")
-            set(TARGET_COMPONENT ${COMPONENT})
-            break()
-        endif()
-    endforeach()
-
-    if(TARGET_COMPONENT STREQUAL "")
-        message(FATAL_ERROR "Component 'esp-lib-utils' not found.")
-    else()
-        idf_component_get_property(ESP_LIB_UTILS_LIB ${TARGET_COMPONENT} COMPONENT_LIB)
+idf_build_get_property(build_components BUILD_COMPONENTS)
+foreach(COMPONENT ${build_components})
+    if(COMPONENT MATCHES "esp-lib-utils" OR COMPONENT MATCHES "espressif__esp-lib-utils")
+        set(TARGET_COMPONENT ${COMPONENT})
+        break()
     endif()
+endforeach()
+
+if(TARGET_COMPONENT STREQUAL "")
+    message(FATAL_ERROR "Component 'esp-lib-utils' not found.")
+else()
+    idf_component_get_property(ESP_LIB_UTILS_LIB ${TARGET_COMPONENT} COMPONENT_LIB)
+    set(TARGET_COMPONENT "")
+endif()
 
 if(CONFIG_ESP_UTILS_CONF_MEM_GENERAL_ALLOC_TYPE_ESP)
     target_compile_options(

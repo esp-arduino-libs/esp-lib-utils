@@ -10,7 +10,6 @@
 
 /**
  * @brief Macros for check handle method
- *
  */
 #define ESP_UTILS_CHECK_HANDLE_WITH_NONE        (0) /*!< Do nothing when check failed */
 #define ESP_UTILS_CHECK_HANDLE_WITH_ERROR_LOG   (1) /*!< Print error message when check failed */
@@ -18,7 +17,6 @@
 
 /**
  * @brief Macros for log level
- *
  */
 #define ESP_UTILS_LOG_LEVEL_DEBUG   (0)     /*!< Extra information which is not necessary for normal use (values,
                                              *   pointers, sizes, etc). */
@@ -29,7 +27,6 @@
 
 /**
  * @brief Macros for memory type
- *
  */
 #define ESP_UTILS_MEM_ALLOC_TYPE_STDLIB        (0)
 #define ESP_UTILS_MEM_ALLOC_TYPE_ESP           (1)

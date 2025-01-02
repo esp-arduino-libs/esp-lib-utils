@@ -27,8 +27,14 @@ jobs:
           export EXTRA_CXXFLAGS="${PEDANTIC_FLAGS}"
           idf.py build
           rm -rf sdkconfig build managed_components dependencies.lock
-          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions" build
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_without_cxx_exceptions;" build
           rm -rf sdkconfig build managed_components dependencies.lock
-          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions;sdkconfig.ci.esp_mem" build
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.check_none;" build
           rm -rf sdkconfig build managed_components dependencies.lock
-          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.cxx_exceptions;sdkconfig.ci.custom_mem" build
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.log_debug;" build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.log_none;" build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.mem_custom;" build
+          rm -rf sdkconfig build managed_components dependencies.lock
+          idf.py -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.mem_esp;" build

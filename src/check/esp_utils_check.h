@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -135,7 +135,6 @@
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`
- *
  */
 #if defined(__cplusplus) && defined(CONFIG_COMPILER_CXX_EXCEPTIONS)
 /**
@@ -331,7 +330,6 @@
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`
- *
  */
 #if defined(__cplusplus) && defined(CONFIG_COMPILER_CXX_EXCEPTIONS)
 /**
@@ -393,7 +391,7 @@
 #define ESP_UTILS_CHECK_NULL_RETURN(x, ...)             assert((x) != NULL)
 #define ESP_UTILS_CHECK_NULL_GOTO(x, goto_tag, ...)     do { \
             assert((x) != NULL); \
-            /* Aoivd unused tag warning */ \
+            /* Avoid unused tag warning */ \
             if (0) { \
                 goto goto_tag; \
             } \
@@ -403,7 +401,7 @@
 #define ESP_UTILS_CHECK_FALSE_RETURN(x, ...)            assert(x)
 #define ESP_UTILS_CHECK_FALSE_GOTO(x, goto_tag, ...)    do { \
             assert(x); \
-            /* Aoivd unused tag warning */ \
+            /* Avoid unused tag warning */ \
             if (0) { \
                 goto goto_tag; \
             } \
@@ -413,7 +411,7 @@
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ...)            assert((x) == ESP_OK)
 #define ESP_UTILS_CHECK_ERROR_GOTO(x, goto_tag, ...)    do { \
             assert((x) == ESP_OK); \
-            /* Aoivd unused tag warning */ \
+            /* Avoid unused tag warning */ \
             if (0) { \
                 goto goto_tag; \
             } \
@@ -422,7 +420,6 @@
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`
- *
  */
 #if defined(__cplusplus) && defined(CONFIG_COMPILER_CXX_EXCEPTIONS)
 #define ESP_UTILS_CHECK_EXCEPTION_RETURN(x, ...) do {\
@@ -462,7 +459,7 @@
 #ifndef ESP_UTILS_CHECK_EXCEPTION_GOTO
 #define ESP_UTILS_CHECK_EXCEPTION_GOTO(x, goto_tag, fmt, ...)   do { \
             (void)x; \
-            /* Aoivd unused tag warning */ \
+            /* Avoid unused tag warning */ \
             if (0) { \
                 goto goto_tag; \
             } \

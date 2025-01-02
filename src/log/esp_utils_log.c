@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -7,12 +7,11 @@
 #include "esp_utils_conf_internal.h"
 
 /**
- * @brief  Extract filename from file path
+ * @brief Extract filename from file path
  *
- * @param  file_path File path
+ * @param[in] file_path File path
  *
  * @return File name
- *
  */
 const char *esp_utils_log_extract_file_name(const char *file_path)
 {

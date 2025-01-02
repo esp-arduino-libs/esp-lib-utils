@@ -7,6 +7,7 @@
 #include "unity.h"
 #define ESP_UTILS_LOG_TAG "TestCpp"
 #include "esp_lib_utils.h"
+#include "esp_utils_helpers.h"
 
 TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 {
@@ -23,6 +24,14 @@ TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 #define MALLOC_GOOD_SIZE    (1 * 1024)
 #define MALLOC_BAD_SIZE     (1 * 1024 * 1024)
 
+template <typename T, typename... Args>
+std::shared_ptr<T> make_shared(Args &&... args)
+{
+    return std::allocate_shared<T, esp_utils::GeneralMemoryAllocator<T>>(
+               esp_utils::GeneralMemoryAllocator<T>(), std::forward<Args>(args)...
+           );
+}
+
 template <int N>
 class TestClass {
 public:
@@ -38,7 +47,7 @@ TEST_CASE("Test memory functions on cpp", "[utils][memory][CPP]")
 
     std::shared_ptr<TestGoodClass> good_ptr = nullptr;
     ESP_UTILS_CHECK_EXCEPTION_GOTO(
-        (good_ptr = esp_utils::make_shared<TestGoodClass>()), err, "Failed to allocate memory size: %d",
+        (good_ptr = make_shared<TestGoodClass>()), err, "Failed to allocate memory size: %d",
         MALLOC_GOOD_SIZE
     );
     ESP_UTILS_LOGI("Malloced value: %d", good_ptr->buffer[0]);
@@ -46,7 +55,7 @@ TEST_CASE("Test memory functions on cpp", "[utils][memory][CPP]")
     {
         std::shared_ptr<TestBadClass> bad_ptr = nullptr;
         ESP_UTILS_CHECK_EXCEPTION_GOTO(
-            (bad_ptr = esp_utils::make_shared<TestBadClass>()), end, "Failed to allocate memory size: %d", MALLOC_BAD_SIZE
+            (bad_ptr = make_shared<TestBadClass>()), end, "Failed to allocate memory size: %d", MALLOC_BAD_SIZE
         );
         ESP_UTILS_LOGI("Malloced value: %d", bad_ptr->buffer[0]);
     }

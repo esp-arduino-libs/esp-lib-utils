@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -49,6 +49,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////// Memory Configurations /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
+    #ifdef CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
+        #define ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE        CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
+    #else
+        #define ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE        (0)
+    #endif
+#endif
+
 #ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
     #ifdef CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
         #define ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE        CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
@@ -62,27 +70,34 @@
         #ifdef CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN
             #define ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN  CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN
         #else
-            #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_ESP`"
+            #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` \
+                     is set to `ESP_UTILS_MEM_ALLOC_TYPE_ESP`"
         #endif
     #endif
 
     #ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS
-        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_ESP`"
+        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is \
+                set to `ESP_UTILS_MEM_ALLOC_TYPE_ESP`"
     #endif
 #elif ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE == ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM
     #ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE
         #ifdef CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE
             #define ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE  CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE
         #else
-            #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
+            #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE` must be defined when \
+                    `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
         #endif
     #endif
 
     #ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC
-        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
+        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` \
+                is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
     #endif
 
     #ifndef ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE
-        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
+        #error "`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE` must be defined when `ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE` \
+                is set to `ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM`"
     #endif
 #endif
+
+// *INDENT-ON*

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -26,6 +26,9 @@ bool esp_utils_mem_print_info(void);
 #ifdef __cplusplus
 
 #include <memory>
+#include <map>
+#include <unordered_map>
+#include <vector>
 
 namespace esp_utils {
 
@@ -37,6 +40,11 @@ struct GeneralMemoryAllocator {
 
     template <typename U>
     GeneralMemoryAllocator(const GeneralMemoryAllocator<U> &) {}
+
+    bool operator!=(const GeneralMemoryAllocator &other) const
+    {
+        return false;
+    }
 
     T *allocate(std::size_t n)
     {
@@ -70,29 +78,25 @@ struct GeneralMemoryAllocator {
     {
         p->~U();
     }
+
+    template <typename U>
+    struct rebind {
+        using other = GeneralMemoryAllocator<U>;
+    };
 };
 
-/**
- * @brief Helper function to create a shared pointer using the memory allocator
- *
- */
-template <typename T, typename... Args>
-std::shared_ptr<T> make_shared(Args &&... args)
+template <typename T, typename U>
+bool operator==(const GeneralMemoryAllocator<T> &, const GeneralMemoryAllocator<U> &)
 {
-    return std::allocate_shared<T, GeneralMemoryAllocator<T>>(GeneralMemoryAllocator<T>(), std::forward<Args>(args)...);
+    return true;
+}
+
+template <typename T, typename U>
+bool operator!=(const GeneralMemoryAllocator<T> &, const GeneralMemoryAllocator<U> &)
+{
+    return false;
 }
 
 } // namespace esp_utils
 
 #endif // __cplusplus
-
-/**
- * @brief Helper functions to allocate memory using the memory allocator
- *
- */
-#undef malloc
-#undef free
-#undef calloc
-#define malloc(size)    esp_utils_mem_gen_malloc(size)
-#define free(p)         esp_utils_mem_gen_free(p)
-#define calloc(n, size) esp_utils_mem_gen_calloc(n, size)
