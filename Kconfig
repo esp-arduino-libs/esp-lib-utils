@@ -81,6 +81,13 @@ menu "ESP Library Utils Configurations"
 
     menu "Memory functions"
         depends on ESP_UTILS_CONF_FILE_SKIP
+        config ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
+            bool "Default enable general memory allocation"
+            default y
+            help
+                If enabled, the driver will use general memory allocation by default, otherwise, the driver will use
+                `malloc` and `free` by default
+
         choice ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CHOICE
             prompt "Select general allocation type"
             default ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB

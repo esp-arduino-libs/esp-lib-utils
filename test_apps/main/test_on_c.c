@@ -6,6 +6,7 @@
 #include "unity.h"
 #define ESP_UTILS_LOG_TAG "TestC"
 #include "esp_lib_utils.h"
+#include "esp_utils_helpers.h"
 
 TEST_CASE("Test log functions on C", "[utils][log][C]")
 {

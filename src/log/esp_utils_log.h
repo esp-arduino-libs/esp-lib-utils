@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -25,7 +25,6 @@ namespace esp_utils {
 
 /**
  * Class to handle logging
- *
  */
 class Log {
 public:
@@ -81,7 +80,6 @@ private:
 
 /**
  * Macros to simplify logging calls
- *
  */
 #define ESP_UTILS_LOGD(format, ...) \
     esp_utils::Log::getInstance().print<ESP_UTILS_LOG_LEVEL_DEBUG>(__FILE__, __LINE__, __func__, format, ##__VA_ARGS__)
@@ -94,7 +92,6 @@ private:
 
 /**
  * Micros to log trace of function calls
- *
  */
 #if ESP_UTILS_CONF_ENABLE_LOG_TRACE
 #define ESP_UTILS_LOG_TRACE_ENTER_WITH_THIS() ESP_UTILS_LOGD("(@%p) Enter", this)
@@ -134,7 +131,6 @@ const char *esp_utils_log_extract_file_name(const char *file_path);
 
 /**
  * Macros to simplify logging calls
- *
  */
 #define ESP_UTILS_LOGD(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_DEBUG,   format, ##__VA_ARGS__)
 #define ESP_UTILS_LOGI(format, ...) ESP_UTILS_LOG_LEVEL_LOCAL(ESP_UTILS_LOG_LEVEL_INFO,    format, ##__VA_ARGS__)
@@ -145,7 +141,6 @@ const char *esp_utils_log_extract_file_name(const char *file_path);
 
 /**
  * Micros to log trace of function calls
- *
  */
 #if ESP_UTILS_CONF_ENABLE_LOG_TRACE
 #define ESP_UTILS_LOG_TRACE_ENTER() ESP_UTILS_LOGD("Enter")
@@ -154,18 +149,3 @@ const char *esp_utils_log_extract_file_name(const char *file_path);
 #define ESP_UTILS_LOG_TRACE_ENTER()
 #define ESP_UTILS_LOG_TRACE_EXIT()
 #endif
-
-/**
- * Macros to replace ESP-IDF logging functions
- *
- */
-#undef ESP_LOGV
-#undef ESP_LOGD
-#undef ESP_LOGI
-#undef ESP_LOGW
-#undef ESP_LOGE
-#define ESP_LOGV(TAG, ...) { (void)TAG; ESP_UTILS_LOGD(__VA_ARGS__); }
-#define ESP_LOGD(TAG, ...) { (void)TAG; ESP_UTILS_LOGD(__VA_ARGS__); }
-#define ESP_LOGI(TAG, ...) { (void)TAG; ESP_UTILS_LOGI(__VA_ARGS__); }
-#define ESP_LOGW(TAG, ...) { (void)TAG; ESP_UTILS_LOGW(__VA_ARGS__); }
-#define ESP_LOGE(TAG, ...) { (void)TAG; ESP_UTILS_LOGE(__VA_ARGS__); }

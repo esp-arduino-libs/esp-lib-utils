@@ -22,11 +22,29 @@
 
 #define PRINT_INFO_BUFFER_SIZE  256
 
+static bool is_alloc_enabled = ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE;
+
+void esp_utils_mem_gen_enable_alloc(bool enable)
+{
+    is_alloc_enabled = enable;
+}
+
+bool esp_utils_mem_check_alloc_enabled(void)
+{
+    return is_alloc_enabled;
+}
+
 void *esp_utils_mem_gen_malloc(size_t size)
 {
     ESP_UTILS_LOG_TRACE_ENTER();
 
     void *p = NULL;
+
+    if (!is_alloc_enabled) {
+        p = malloc(size);
+        goto end;
+    }
+
 #if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE == ESP_UTILS_MEM_ALLOC_TYPE_STDLIB
     p = malloc(size);
 #elif ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE == ESP_UTILS_MEM_ALLOC_TYPE_ESP
@@ -40,6 +58,8 @@ void *esp_utils_mem_gen_malloc(size_t size)
     p = m_malloc(size);
 #endif // MICROPY_MALLOC_USES_ALLOCATED_SIZE
 #endif // ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
+
+end:
     ESP_UTILS_LOGD("Malloc @%p: %d", p, (int)size);
 
     ESP_UTILS_LOG_TRACE_EXIT();
@@ -52,6 +72,12 @@ void esp_utils_mem_gen_free(void *p)
     ESP_UTILS_LOG_TRACE_ENTER();
 
     ESP_UTILS_LOGD("Free @%p", p);
+
+    if (!is_alloc_enabled) {
+        free(p);
+        goto end;
+    }
+
 #if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE == ESP_UTILS_MEM_ALLOC_TYPE_STDLIB
     free(p);
 #elif ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE == ESP_UTILS_MEM_ALLOC_TYPE_ESP
@@ -66,6 +92,7 @@ void esp_utils_mem_gen_free(void *p)
 #endif // MICROPY_MALLOC_USES_ALLOCATED_SIZE
 #endif // ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
 
+end:
     ESP_UTILS_LOG_TRACE_EXIT();
 }
 

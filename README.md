@@ -112,7 +112,6 @@ Since `esp-lib-utils` configures its functionality through the *esp_utils_conf.h
  *  - ESP_UTILS_LOG_LEVEL_WARNING: Error conditions from which recovery measures have been taken
  *  - ESP_UTILS_LOG_LEVEL_ERROR:   Critical errors, software module cannot recover on its own
  *  - ESP_UTILS_LOG_LEVEL_NONE:    No log output (highest level) (Minimum code size)
- *
  */
 #define ESP_UTILS_CONF_LOG_LEVEL            (ESP_UTILS_LOG_LEVEL_DEBUG)
 ...
@@ -234,6 +233,14 @@ void test_check_null_exit(void)
 #define ESP_UTILS_LOG_TAG "MyLibrary"
 #include "esp_lib_utils.h"
 
+template <typename T, typename... Args>
+std::shared_ptr<T> make_shared(Args &&... args)
+{
+    return std::allocate_shared<T, esp_utils::GeneralMemoryAllocator<T>>(
+               esp_utils::GeneralMemoryAllocator<T>(), std::forward<Args>(args)...
+           );
+}
+
 void test_memory(void)
 {
     // Allocate memory in C style (`malloc/calloc` and `free` are re-defined in the library)
@@ -244,7 +251,7 @@ void test_memory(void)
     // Allocate memory in C++ style
     std::shared_ptr<int> cxx_ptr = nullptr;
     ESP_UTILS_CHECK_EXCEPTION_EXIT(
-        (cxx_ptr = esp_utils::make_shared<int>()), "Failed to allocate memory"
+        (cxx_ptr = make_shared<int>()), "Failed to allocate memory"
     );
     cxx_ptr = nullptr;
 }
