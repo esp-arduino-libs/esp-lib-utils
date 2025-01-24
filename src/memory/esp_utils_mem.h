@@ -14,6 +14,7 @@
 extern "C" {
 #endif
 
+void esp_utils_mem_gen_enable_alloc(bool enable);
 void *esp_utils_mem_gen_malloc(size_t size);
 void esp_utils_mem_gen_free(void *p);
 void *esp_utils_mem_gen_calloc(size_t n, size_t size);
