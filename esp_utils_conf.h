@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -40,11 +40,6 @@
     #define ESP_UTILS_CONF_ENABLE_LOG_TRACE                 (0)
 
 #endif // ESP_UTILS_CONF_LOG_LEVEL
-
-/**
- * @brief Log format buffer size
- */
-#define ESP_UTILS_CONF_LOG_BUFFER_SIZE                      (256)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////// Memory Configurations /////////////////////////////////////////////////
@@ -93,7 +88,7 @@
  *   3. Even if the patch version is not consistent, it will not affect normal functionality.
  */
 #define ESP_UTILS_CONF_FILE_VERSION_MAJOR 1
-#define ESP_UTILS_CONF_FILE_VERSION_MINOR 1
+#define ESP_UTILS_CONF_FILE_VERSION_MINOR 2
 #define ESP_UTILS_CONF_FILE_VERSION_PATCH 0
 
 // *INDENT-ON*

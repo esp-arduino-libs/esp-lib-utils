@@ -18,5 +18,11 @@ target_sources(usermod_esp_lib_utils INTERFACE ${SRCS_C} ${SRCS_CXX} ${MPY_C} ${
 # Add the current directory as an include directory.
 target_include_directories(usermod_esp_lib_utils INTERFACE ${SRC_DIR} ${MPY_DIR})
 
+# Add compile options. Since the target is not created by `idf_component_register()`, we need to add the `ESP_PLATFORM` define manually.
+target_compile_options(usermod_esp_lib_utils
+    INTERFACE
+        -Wno-missing-field-initializers -DESP_PLATFORM $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++17>
+)
+
 # Link our INTERFACE library to the usermod target.
 target_link_libraries(usermod INTERFACE usermod_esp_lib_utils)
