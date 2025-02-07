@@ -73,10 +73,6 @@ menu "ESP Library Utils Configurations"
             default n
             help
                 If enabled, the driver will print trace log messages when enter/exit functions, useful for debugging
-
-        config ESP_UTILS_CONF_LOG_BUFFER_SIZE
-            int "Buffer size for formatting messages"
-            default 256
     endmenu
 
     menu "Memory functions"
