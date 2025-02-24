@@ -60,7 +60,7 @@ void *esp_utils_mem_gen_malloc(size_t size)
 #endif // ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
 
 end:
-    ESP_UTILS_LOGD("Malloc @%p: %d", p, (int)size);
+    // ESP_UTILS_LOGD("Malloc @%p: %d", p, (int)size);
 
     ESP_UTILS_LOG_TRACE_EXIT();
 
@@ -71,7 +71,7 @@ void esp_utils_mem_gen_free(void *p)
 {
     ESP_UTILS_LOG_TRACE_ENTER();
 
-    ESP_UTILS_LOGD("Free @%p", p);
+    // ESP_UTILS_LOGD("Free @%p", p);
 
     if (!is_alloc_enabled) {
         free(p);

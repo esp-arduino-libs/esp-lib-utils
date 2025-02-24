@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: CC0-1.0
  */
@@ -8,6 +8,8 @@
 #define ESP_UTILS_LOG_TAG "TestCpp"
 #include "esp_lib_utils.h"
 #include "esp_utils_helpers.h"
+
+using namespace std;
 
 TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 {
@@ -24,13 +26,13 @@ TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 #define MALLOC_GOOD_SIZE    (1 * 1024)
 #define MALLOC_BAD_SIZE     (1 * 1024 * 1024)
 
-template <typename T, typename... Args>
-std::shared_ptr<T> make_shared(Args &&... args)
-{
-    return std::allocate_shared<T, esp_utils::GeneralMemoryAllocator<T>>(
-               esp_utils::GeneralMemoryAllocator<T>(), std::forward<Args>(args)...
-           );
-}
+// template <typename T, typename... Args>
+// std::shared_ptr<T> make_shared(Args &&... args)
+// {
+//     return std::allocate_shared<T, esp_utils::GeneralMemoryAllocator<T>>(
+//                esp_utils::GeneralMemoryAllocator<T>(), std::forward<Args>(args)...
+//            );
+// }
 
 template <int N>
 class TestClass {
