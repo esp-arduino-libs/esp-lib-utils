@@ -28,7 +28,14 @@
 /**
  * @brief Macros for memory type
  */
-#define ESP_UTILS_MEM_ALLOC_TYPE_STDLIB        (0)
-#define ESP_UTILS_MEM_ALLOC_TYPE_ESP           (1)
-#define ESP_UTILS_MEM_ALLOC_TYPE_MICROPYTHON   (2)
-#define ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM        (3)
+#define ESP_UTILS_MEM_ALLOC_TYPE_STDLIB         (0)
+#define ESP_UTILS_MEM_ALLOC_TYPE_ESP            (1)
+#define ESP_UTILS_MEM_ALLOC_TYPE_MICROPYTHON    (2)
+#define ESP_UTILS_MEM_ALLOC_TYPE_CUSTOM         (3)
+
+/**
+ * @brief Macros for ESP memory caps
+ */
+#define ESP_UTILS_MEM_ALLOC_ESP_CAPS_DEFAULT    (0)
+#define ESP_UTILS_MEM_ALLOC_ESP_CAPS_SRAM       (1)
+#define ESP_UTILS_MEM_ALLOC_ESP_CAPS_PSRAM      (2)

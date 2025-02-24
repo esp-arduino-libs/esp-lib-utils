@@ -21,8 +21,12 @@ target_include_directories(usermod_esp_lib_utils INTERFACE ${SRC_DIR} ${MPY_DIR}
 # Add compile options. Since the target is not created by `idf_component_register()`, we need to add the `ESP_PLATFORM` define manually.
 target_compile_options(usermod_esp_lib_utils
     INTERFACE
-        -Wno-missing-field-initializers -DESP_PLATFORM $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++17>
+        -Wno-missing-field-initializers -DESP_PLATFORM
 )
 
 # Link our INTERFACE library to the usermod target.
 target_link_libraries(usermod INTERFACE usermod_esp_lib_utils)
+
+# Include core source components.
+include(${MICROPY_DIR}/py/py.cmake)
+micropy_gather_target_properties(usermod_esp_lib_utils)
