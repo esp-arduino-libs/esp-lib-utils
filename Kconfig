@@ -1,7 +1,9 @@
 menu "ESP Library Utils Configurations"
     config ESP_UTILS_CONF_FILE_SKIP
-        bool "Unckeck this to use custom `esp_utils_conf.h`"
+        bool "Enable to skip `esp_utils_conf.h`"
         default y
+        help
+            If want to use `esp_utils_conf.h` to configure the library, uncheck this option. Otherwise, the configurations in sdkconfig will be used.
 
     menu "Check functions"
         depends on ESP_UTILS_CONF_FILE_SKIP
@@ -77,46 +79,97 @@ menu "ESP Library Utils Configurations"
 
     menu "Memory functions"
         depends on ESP_UTILS_CONF_FILE_SKIP
-        config ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
-            bool "Default enable general memory allocation"
-            default y
-            help
-                If enabled, the driver will use general memory allocation by default, otherwise, the driver will use
-                `malloc` and `free` by default
 
-        choice ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CHOICE
-            prompt "Select general allocation type"
-            default ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
+        menuconfig ESP_UTILS_CONF_MEM_ENABLE_GLOB_ALLOC
+            bool "CXX global allocator (new & delete)"
+            default n
 
-            config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
-                bool "Standard library (malloc, free)"
+        if ESP_UTILS_CONF_MEM_ENABLE_GLOB_ALLOC
+            config ESP_UTILS_CONF_MEM_GLOB_ALLOC_DEFAULT_ENABLE
+                bool "Default enable allocation"
+                default y
+                help
+                    If enabled, the driver will use global memory allocation by default, otherwise, the driver will use
+                    `new` and `delete` by default
 
-            config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
-                bool "ESP (heap_caps_malloc, free)"
+            choice ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_CHOICE
+                prompt "Select allocation type"
+                default ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_STDLIB
 
-            config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_MICROPYTHON
-                bool "MicroPython (mp_malloc, mp_free)"
+                config ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_STDLIB
+                    bool "Standard library (new, delete)"
 
-            config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
-                bool "Custom (`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC` and `ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE`)"
-        endchoice
+                config ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_ESP
+                    bool "ESP (heap_caps_malloc, free)"
 
-        config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
-            int
-            default 0 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
-            default 1 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
-            default 2 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_MICROPYTHON
-            default 3 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
+                config ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_MICROPYTHON
+                    bool "MicroPython (mp_malloc, mp_free)"
 
-        config ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN
-            int "General esp memory alignment (bytes)"
-            depends on ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
-            default 1
-            range 1 1024
+                config ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_CUSTOM
+                    bool "Custom (`ESP_UTILS_CONF_MEM_GLOB_ALLOC_CUSTOM_MALLOC` and `ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE`)"
+            endchoice
 
-        config ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE
-            string "General custom memory header file"
-            depends on ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
-            default "stdlib.h"
+            config ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE
+                int
+                default 0 if ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_STDLIB
+                default 1 if ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_ESP
+                default 2 if ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_MICROPYTHON
+                default 3 if ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_CUSTOM
+
+            config ESP_UTILS_CONF_MEM_GLOB_ALLOC_ESP_ALIGN
+                int "Memory alignment (bytes)"
+                depends on ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_ESP
+                default 1
+                range 1 1024
+
+            config ESP_UTILS_CONF_MEM_GLOB_ALLOC_CUSTOM_INCLUDE
+                string "Custom memory header file"
+                depends on ESP_UTILS_CONF_MEM_GLOB_ALLOC_TYPE_CUSTOM
+                default ""
+        endmenu
+
+        menu "C/CXX general allocator"
+            config ESP_UTILS_CONF_MEM_GEN_ALLOC_DEFAULT_ENABLE
+                bool "Default enable general memory allocation"
+                default y
+                help
+                    If enabled, the driver will use general memory allocation by default, otherwise, the driver will use
+                    `malloc` and `free` by default
+
+            choice ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CHOICE
+                prompt "Select general allocation type"
+                default ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
+
+                config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
+                    bool "Standard library (malloc, free)"
+
+                config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
+                    bool "ESP (heap_caps_malloc, free)"
+
+                config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_MICROPYTHON
+                    bool "MicroPython (mp_malloc, mp_free)"
+
+                config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
+                    bool "Custom (`ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC` and `ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE`)"
+            endchoice
+
+            config ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE
+                int
+                default 0 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_STDLIB
+                default 1 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
+                default 2 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_MICROPYTHON
+                default 3 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
+
+            config ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_ALIGN
+                int "General esp memory alignment (bytes)"
+                depends on ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
+                default 1
+                range 1 1024
+
+            config ESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE
+                string "General custom memory header file"
+                depends on ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
+                default "stdlib.h"
+        endmenu
     endmenu
 endmenu

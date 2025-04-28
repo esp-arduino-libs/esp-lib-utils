@@ -8,21 +8,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "sdkconfig.h"
-#include "esp_utils_conf_internal.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void esp_utils_mem_gen_enable_alloc(bool enable);
-void *esp_utils_mem_gen_malloc(size_t size);
-void esp_utils_mem_gen_free(void *p);
-void *esp_utils_mem_gen_calloc(size_t n, size_t size);
-bool esp_utils_mem_print_info(void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #ifdef __cplusplus
 
@@ -99,3 +84,17 @@ bool operator!=(const GeneralMemoryAllocator<T> &, const GeneralMemoryAllocator<
 } // namespace esp_utils
 
 #endif // __cplusplus
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void esp_utils_mem_gen_enable_alloc(bool enable);
+void *esp_utils_mem_gen_malloc(size_t size);
+void esp_utils_mem_gen_free(void *p);
+void *esp_utils_mem_gen_calloc(size_t n, size_t size);
+bool esp_utils_mem_print_info(void);
+
+#ifdef __cplusplus
+}
+#endif
