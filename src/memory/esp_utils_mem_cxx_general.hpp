@@ -9,7 +9,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
-#include "sdkconfig.h"
+#include "esp_utils_conf_internal.h"
 #include "esp_utils_mem_general.h"
 
 namespace esp_utils {
@@ -34,7 +34,7 @@ struct GeneralMemoryAllocator {
             return nullptr;
         }
         void *ptr = esp_utils_mem_gen_malloc(n * sizeof(T));
-#if CONFIG_COMPILER_CXX_EXCEPTIONS
+#if !defined(ESP_PLATFORM) || CONFIG_COMPILER_CXX_EXCEPTIONS
         if (ptr == nullptr) {
             throw std::bad_alloc();
         }

@@ -31,7 +31,7 @@ void *operator new (std::size_t size)
     }
 
     ptr = MALLOC(size);
-#if CONFIG_COMPILER_CXX_EXCEPTIONS
+#if !defined(ESP_PLATFORM) || CONFIG_COMPILER_CXX_EXCEPTIONS
     if (!ptr) {
         throw std::bad_alloc();
     }
@@ -51,7 +51,7 @@ void *operator new[](std::size_t size)
     }
 
     ptr = MALLOC(size);
-#if CONFIG_COMPILER_CXX_EXCEPTIONS
+#if !defined(ESP_PLATFORM) || CONFIG_COMPILER_CXX_EXCEPTIONS
     if (!ptr) {
         throw std::bad_alloc();
     }

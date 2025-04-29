@@ -7,7 +7,6 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "sdkconfig.h"
 #include "esp_utils_mem_general.h"
 #include "esp_utils_mem_cxx_global.h"
 #ifdef __cplusplus
@@ -15,6 +14,8 @@
 
 extern "C" {
 #endif
+
+#if defined(ESP_PLATFORM)
 
 /**
  * @brief Print memory information to the console
@@ -26,6 +27,8 @@ extern "C" {
  * @return true if the memory information was successfully printed, false otherwise
  */
 bool esp_utils_mem_print_info(void);
+
+#endif // ESP_PLATFORM
 
 #ifdef __cplusplus
 }

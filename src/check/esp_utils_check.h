@@ -3,7 +3,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+#if defined(ESP_PLATFORM)
 #include "esp_err.h"
+#endif
 #include "esp_utils_conf_internal.h"
 #include "log/esp_utils_log.h"
 
@@ -91,6 +93,7 @@
             }                                     \
         } while(0)
 
+#if defined(ESP_PLATFORM)
 /**
  * @brief Check if the value is not `ESP_OK`; if not, return the specified value.
  *
@@ -132,6 +135,7 @@
                 return;                           \
             }                                     \
         } while(0)
+#endif // ESP_PLATFORM
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`
@@ -281,6 +285,7 @@
             }                                     \
         } while(0)
 
+#if defined(ESP_PLATFORM)
 /**
  * @brief Check if the value is not `ESP_OK`; if not, log an error and return the specified value.
  *
@@ -327,6 +332,7 @@
                 return;                           \
             }                                     \
         } while(0)
+#endif // ESP_PLATFORM
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`
@@ -408,6 +414,7 @@
     } while (0)
 #define ESP_UTILS_CHECK_FALSE_EXIT(x, ...)              assert(x)
 
+#if defined(ESP_PLATFORM)
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ...)            assert((x) == ESP_OK)
 #define ESP_UTILS_CHECK_ERROR_GOTO(x, goto_tag, ...)    do { \
             assert((x) == ESP_OK); \
@@ -417,6 +424,7 @@
             } \
     } while (0)
 #define ESP_UTILS_CHECK_ERROR_EXIT(x, ...)              assert((x) == ESP_OK)
+#endif // ESP_PLATFORM
 
 /**
  * The `try {} catch {}` block is only available in C++ and `CONFIG_COMPILER_CXX_EXCEPTIONS = 1`

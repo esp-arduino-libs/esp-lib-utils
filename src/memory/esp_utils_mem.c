@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+#if defined(ESP_PLATFORM)
+
 #include "esp_heap_caps.h"
 #include "check/esp_utils_check.h"
 #include "log/esp_utils_log.h"
@@ -32,3 +34,5 @@ bool esp_utils_mem_print_info(void)
 
     return true;
 }
+
+#endif // ESP_PLATFORM

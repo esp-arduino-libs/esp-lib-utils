@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#if defined(ESP_PLATFORM)
+
 #include "esp_heap_caps.h"
 
 #if ESP_UTILS_MEM_ALLOC_ESP_CAPS == ESP_UTILS_MEM_ALLOC_ESP_CAPS_DEFAULT
@@ -23,3 +25,5 @@
 
 #define MALLOC(x)   heap_caps_aligned_alloc(ESP_UTILS_MEM_ALLOC_ESP_ALIGN, x, MEM_CAPS)
 #define FREE(x)     heap_caps_free(x)
+
+#endif // ESP_PLATFORM
