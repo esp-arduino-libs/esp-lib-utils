@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "sdkconfig.h"
-
 /**
  * @brief Macros for check handle method
  */

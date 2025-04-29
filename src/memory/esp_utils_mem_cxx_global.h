@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <stdbool.h>
 #include "esp_utils_conf_internal.h"
 
 #if ESP_UTILS_CONF_MEM_ENABLE_CXX_GLOB_ALLOC
