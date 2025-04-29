@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v0.2.1 - 2025-04-29
+
+### Enhancements:
+
+* feat(memory): add C++ global memory allocation
+
 ## v0.2.0 - 2025-02-07
 
 ### Enhancements:

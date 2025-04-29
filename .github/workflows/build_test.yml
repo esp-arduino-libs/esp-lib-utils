@@ -11,7 +11,7 @@ jobs:
       matrix:
         idf_ver:    ["release-v5.1", "release-v5.2", "release-v5.3"]
         idf_target: ["esp32", "esp32s3"]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container: espressif/idf:${{ matrix.idf_ver }}
     steps:
       - uses: actions/checkout@v3

@@ -3,41 +3,59 @@ idf_component_register(
     WHOLE_ARCHIVE
 )
 
-idf_build_get_property(build_components BUILD_COMPONENTS)
-foreach(COMPONENT ${build_components})
-    if(COMPONENT MATCHES "esp-lib-utils" OR COMPONENT MATCHES "espressif__esp-lib-utils")
-        set(TARGET_COMPONENT ${COMPONENT})
-        break()
-    endif()
-endforeach()
-
-if(TARGET_COMPONENT STREQUAL "")
-    message(FATAL_ERROR "Component 'esp-lib-utils' not found.")
-else()
-    idf_component_get_property(ESP_LIB_UTILS_LIB ${TARGET_COMPONENT} COMPONENT_LIB)
+# Function to get component library
+function(get_component_library component_name output_var)
+    # Get the exact component name
+    idf_build_get_property(build_components BUILD_COMPONENTS)
     set(TARGET_COMPONENT "")
-endif()
+    foreach(COMPONENT ${build_components})
+        if(COMPONENT MATCHES "${component_name}" OR COMPONENT MATCHES "espressif__${component_name}")
+            set(TARGET_COMPONENT ${COMPONENT})
+            break()
+        endif()
+    endforeach()
 
-if(CONFIG_ESP_UTILS_CONF_MEM_GENERAL_ALLOC_TYPE_ESP)
+    # Get the component library
+    if(TARGET_COMPONENT STREQUAL "")
+        message(FATAL_ERROR "Component '${component_name}' not found.")
+    else()
+        idf_component_get_property(COMPONENT_LIB ${TARGET_COMPONENT} COMPONENT_LIB)
+        set(${output_var} ${COMPONENT_LIB} PARENT_SCOPE)
+    endif()
+endfunction()
+
+get_component_library("esp-lib-utils" ESP_LIB_UTILS_LIB)
+if(CONFIG_ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM)
     target_compile_options(
         ${ESP_LIB_UTILS_LIB}
         PUBLIC
-            "-DESP_UTILS_CONF_MEM_GENERAL_ALLOC_ESP_CAPS=(MALLOC_CAP_DEFAULT | MALLOC_CAP_8BIT)"
+            "-DESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_INCLUDE=\"esp_heap_caps.h\""
     )
-elseif(CONFIG_ESP_UTILS_CONF_MEM_GENERAL_ALLOC_TYPE_CUSTOM)
     target_compile_options(
         ${ESP_LIB_UTILS_LIB}
         PUBLIC
-            "-DESP_UTILS_CONF_MEM_GENERAL_ALLOC_CUSTOM_INCLUDE=\"esp_heap_caps.h\""
+            "-DESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_MALLOC(x)=heap_caps_aligned_alloc(1, x, MALLOC_CAP_DEFAULT | MALLOC_CAP_8BIT)"
     )
     target_compile_options(
         ${ESP_LIB_UTILS_LIB}
         PUBLIC
-            "-DESP_UTILS_CONF_MEM_GENERAL_ALLOC_CUSTOM_MALLOC(x)=heap_caps_aligned_alloc(1, x, MALLOC_CAP_DEFAULT | MALLOC_CAP_8BIT)"
+            "-DESP_UTILS_CONF_MEM_GEN_ALLOC_CUSTOM_FREE(x)=heap_caps_free(x)"
+    )
+endif()
+if(CONFIG_ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_TYPE_CUSTOM)
+    target_compile_options(
+        ${ESP_LIB_UTILS_LIB}
+        PUBLIC
+            "-DESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_CUSTOM_INCLUDE=\"esp_heap_caps.h\""
     )
     target_compile_options(
         ${ESP_LIB_UTILS_LIB}
         PUBLIC
-            "-DESP_UTILS_CONF_MEM_GENERAL_ALLOC_CUSTOM_FREE(x)=heap_caps_free(x)"
+            "-DESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_CUSTOM_NEW(x)=heap_caps_aligned_alloc(1, x, MALLOC_CAP_DEFAULT | MALLOC_CAP_8BIT)"
+    )
+    target_compile_options(
+        ${ESP_LIB_UTILS_LIB}
+        PUBLIC
+            "-DESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_CUSTOM_DELETE(x)=heap_caps_free(x)"
     )
 endif()
