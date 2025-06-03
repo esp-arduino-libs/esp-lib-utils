@@ -1,10 +1,11 @@
 # ChangeLog
 
-## v0.2.1 - 2025-04-29
+## v0.2.1 - 2025-05-30
 
 ### Enhancements:
 
 * feat(memory): add C++ global memory allocation
+* feat(repo): support compile on PC
 
 ## v0.2.0 - 2025-02-07
 
