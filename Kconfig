@@ -29,6 +29,22 @@ menu "ESP Library Utils Configurations"
         endmenu
 
         menu "Log functions"
+            choice ESP_UTILS_CONF_LOG_IMPL_TYPE
+                prompt "Select log implementation"
+                default ESP_UTILS_CONF_LOG_IMPL_ESP
+
+                config ESP_UTILS_CONF_LOG_IMPL_STDLIB
+                    bool "Standard (printf)"
+
+                config ESP_UTILS_CONF_LOG_IMPL_ESP
+                    bool "ESP (ESP_LOG)"
+            endchoice
+
+            config ESP_UTILS_CONF_LOG_IMPL_TYPE
+                int
+                default 0 if ESP_UTILS_CONF_LOG_IMPL_STDLIB
+                default 1 if ESP_UTILS_CONF_LOG_IMPL_ESP
+
             choice ESP_UTILS_CONF_LOG_LEVEL
                 prompt "Select global log level"
                 default ESP_UTILS_CONF_LOG_LEVEL_INFO

@@ -18,3 +18,12 @@
 
 /* Memory */
 #include "memory/esp_utils_mem.h"
+
+#if defined(__cplusplus)
+/* Thread */
+#include "thread/esp_utils_thread.hpp"
+/* Log */
+#include "log/esp_utils_log.hpp"
+/* More */
+#include "more/esp_utils_more.hpp"
+#endif // defined(__cplusplus)
