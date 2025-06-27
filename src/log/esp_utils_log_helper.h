@@ -7,6 +7,7 @@
 
 #include "esp_utils_log.h"
 
+#if ESP_UTILS_CONF_LOG_IMPL_TYPE != ESP_UTILS_LOG_IMPL_ESP
 /**
  * Helper macros to replace ESP-IDF logging functions
  */
@@ -20,3 +21,4 @@
 #define ESP_LOGI(TAG, ...) { (void)TAG; ESP_UTILS_LOGI(__VA_ARGS__); }
 #define ESP_LOGW(TAG, ...) { (void)TAG; ESP_UTILS_LOGW(__VA_ARGS__); }
 #define ESP_LOGE(TAG, ...) { (void)TAG; ESP_UTILS_LOGE(__VA_ARGS__); }
+#endif

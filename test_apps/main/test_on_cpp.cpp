@@ -3,13 +3,14 @@
  *
  * SPDX-License-Identifier: CC0-1.0
  */
+#include <thread>
 #include <memory>
 #include "unity.h"
 #define ESP_UTILS_LOG_TAG "TestCpp"
 #include "esp_lib_utils.h"
 #include "esp_utils_helpers.h"
 
-using namespace std;
+using namespace esp_utils;
 
 TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 {
@@ -47,7 +48,7 @@ TEST_CASE("Test memory functions on cpp", "[utils][memory][CPP]")
 
     std::shared_ptr<TestGoodClass> good_ptr = nullptr;
     ESP_UTILS_CHECK_EXCEPTION_GOTO(
-        (good_ptr = make_shared<TestGoodClass>()), err, "Failed to allocate memory size: %d",
+        (good_ptr = std::make_shared<TestGoodClass>()), err, "Failed to allocate memory size: %d",
         MALLOC_GOOD_SIZE
     );
     ESP_UTILS_LOGI("Malloced value: %d", good_ptr->buffer[0]);
@@ -55,7 +56,7 @@ TEST_CASE("Test memory functions on cpp", "[utils][memory][CPP]")
     {
         std::shared_ptr<TestBadClass> bad_ptr = nullptr;
         ESP_UTILS_CHECK_EXCEPTION_GOTO(
-            (bad_ptr = make_shared<TestBadClass>()), end, "Failed to allocate memory size: %d", MALLOC_BAD_SIZE
+            (bad_ptr = std::make_shared<TestBadClass>()), end, "Failed to allocate memory size: %d", MALLOC_BAD_SIZE
         );
         ESP_UTILS_LOGI("Malloced value: %d", bad_ptr->buffer[0]);
     }
@@ -183,4 +184,19 @@ TEST_CASE("Test check functions on cpp", "[utils][check][CPP]")
     test_check_null_goto();
     test_check_null_exit();
     TEST_ASSERT(test_check_null_exit_result);
+}
+
+TEST_CASE("Test thread functions on cpp", "[utils][thread][CPP]")
+{
+    thread_config_guard guard(ThreadConfig{
+        .name = "test_thread",
+        .core_id = 0,
+        .priority = 5,
+        .stack_size = 10 * 1024,
+    });
+    std::thread([]() {
+        char buffer[5 * 1024] = { 0 };
+        sprintf(buffer, "Create thread");
+        ESP_UTILS_LOGI("%s", buffer);
+    }).join();
 }

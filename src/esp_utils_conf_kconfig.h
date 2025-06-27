@@ -24,7 +24,7 @@
 #   ifdef CONFIG_ESP_UTILS_CONF_LOG_IMPL_TYPE
 #       define ESP_UTILS_CONF_LOG_IMPL_TYPE      CONFIG_ESP_UTILS_CONF_LOG_IMPL_TYPE
 #   else
-#       error "Missing configuration: ESP_UTILS_CONF_LOG_IMPL_TYPE"
+#       define ESP_UTILS_CONF_LOG_IMPL_TYPE      ESP_UTILS_LOG_IMPL_STDLIB
 #   endif
 #endif
 
