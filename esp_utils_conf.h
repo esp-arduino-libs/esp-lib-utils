@@ -23,6 +23,13 @@
 ////////////////////////////////////////////////// Log Configurations //////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
+ * Log implementation, choose one of the following:
+ *  - ESP_UTILS_CONF_LOG_IMPL_STDLIB:      Use the standard library log implementation (printf)
+ *  - ESP_UTILS_CONF_LOG_IMPL_ESP:         Use the ESP-IDF log implementation (ESP_LOG)
+ */
+#define ESP_UTILS_CONF_LOG_IMPL_TYPE                        (ESP_UTILS_CONF_LOG_IMPL_STDLIB)
+
+/**
  * Global log level, logs with a level lower than this will not be compiled. Choose one of the following:
  *  - ESP_UTILS_LOG_LEVEL_DEBUG:   Extra information which is not necessary for normal use (values, pointers, sizes, etc)
  *                                 (lowest level)
@@ -135,7 +142,7 @@
  * 3. Patch version mismatch: No impact on functionality
  */
 #define ESP_UTILS_CONF_FILE_VERSION_MAJOR 1
-#define ESP_UTILS_CONF_FILE_VERSION_MINOR 3
+#define ESP_UTILS_CONF_FILE_VERSION_MINOR 4
 #define ESP_UTILS_CONF_FILE_VERSION_PATCH 0
 
 // *INDENT-ON*

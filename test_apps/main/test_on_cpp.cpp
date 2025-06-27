@@ -13,14 +13,12 @@ using namespace std;
 
 TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 {
-    ESP_UTILS_LOG_TRACE_ENTER();
+    ESP_UTILS_LOG_TRACE_GUARD();
 
     ESP_UTILS_LOGD("This is a debug message");
     ESP_UTILS_LOGI("This is an info message");
     ESP_UTILS_LOGW("This is a warning message");
     ESP_UTILS_LOGE("This is an error message");
-
-    ESP_UTILS_LOG_TRACE_EXIT();
 }
 
 #define MALLOC_GOOD_SIZE    (1 * 1024)

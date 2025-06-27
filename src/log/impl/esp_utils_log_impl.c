@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include <string.h>
-#include "esp_utils_conf_internal.h"
 
 /**
  * @brief Extract filename from file path
