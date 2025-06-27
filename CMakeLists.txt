@@ -6,6 +6,7 @@ if(ESP_PLATFORM)
     idf_component_register(
         SRCS ${SRCS_C} ${SRCS_CPP}
         INCLUDE_DIRS ${SRC_DIR}
+        PRIV_REQUIRES pthread
     )
 else()
     set(COMPONENT_LIB esp-lib-utils)
