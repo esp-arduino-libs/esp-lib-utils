@@ -6,6 +6,7 @@ if(ESP_PLATFORM)
     idf_component_register(
         SRCS ${SRCS_C} ${SRCS_CPP}
         INCLUDE_DIRS ${SRC_DIR}
+        PRIV_REQUIRES pthread
     )
 else()
     set(COMPONENT_LIB esp-lib-utils)
@@ -16,8 +17,6 @@ endif()
 target_compile_options(${COMPONENT_LIB}
     PUBLIC
         -Wno-missing-field-initializers
-    PRIVATE
-        $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++20>
 )
 
 if(NOT ESP_PLATFORM)

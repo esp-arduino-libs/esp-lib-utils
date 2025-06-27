@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v0.2.2 - 2025-06-27
+
+### Enhancements:
+
+* feat(log): add CXX log trace guard and ESP-IDF log implementation
+* feat(check): add value check macros
+* feat(repo): add thread module, support configure thread
+* feat(repo): add more module, support some guard classes
+* feat(cmake): remove CXX compile options
+
 ## v0.2.1 - 2025-05-30
 
 ### Enhancements:

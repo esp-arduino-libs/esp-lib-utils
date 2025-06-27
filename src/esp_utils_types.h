@@ -14,6 +14,12 @@
 #define ESP_UTILS_CHECK_HANDLE_WITH_ASSERT      (2) /*!< Assert when check failed */
 
 /**
+ * @brief Macros for log implementation
+ */
+#define ESP_UTILS_LOG_IMPL_STDLIB              (0) /*!< Standard (printf) */
+#define ESP_UTILS_LOG_IMPL_ESP                 (1) /*!< ESP (esp_log) */
+
+/**
  * @brief Macros for log level
  */
 #define ESP_UTILS_LOG_LEVEL_DEBUG   (0)     /*!< Extra information which is not necessary for normal use (values,

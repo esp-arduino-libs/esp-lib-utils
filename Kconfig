@@ -7,7 +7,7 @@ menu "ESP Library Utils Configurations"
 
     if ESP_UTILS_CONF_FILE_SKIP
         menu "Check functions"
-            choice ESP_UTILS_CONF_CHECK_HANDLE_METHOD
+            choice ESP_UTILS_CONF_CHECK_HANDLE_METHOD_CHOICE
                 prompt "Select handle method when check failed"
                 default ESP_UTILS_CHECK_HANDLE_WITH_ERROR_LOG
 
@@ -29,7 +29,23 @@ menu "ESP Library Utils Configurations"
         endmenu
 
         menu "Log functions"
-            choice ESP_UTILS_CONF_LOG_LEVEL
+            choice ESP_UTILS_CONF_LOG_IMPL_TYPE_CHOICE
+                prompt "Select log implementation"
+                default ESP_UTILS_CONF_LOG_IMPL_ESP
+
+                config ESP_UTILS_CONF_LOG_IMPL_STDLIB
+                    bool "Standard (printf)"
+
+                config ESP_UTILS_CONF_LOG_IMPL_ESP
+                    bool "ESP (ESP_LOG)"
+            endchoice
+
+            config ESP_UTILS_CONF_LOG_IMPL_TYPE
+                int
+                default 0 if ESP_UTILS_CONF_LOG_IMPL_STDLIB
+                default 1 if ESP_UTILS_CONF_LOG_IMPL_ESP
+
+            choice ESP_UTILS_CONF_LOG_LEVEL_CHOICE
                 prompt "Select global log level"
                 default ESP_UTILS_CONF_LOG_LEVEL_INFO
 
@@ -110,7 +126,7 @@ menu "ESP Library Utils Configurations"
                     default 2 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_MICROPYTHON
                     default 3 if ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_CUSTOM
 
-                choice ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS
+                choice ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS_CHOICE
                     prompt "ESP memory caps"
                     depends on ESP_UTILS_CONF_MEM_GEN_ALLOC_TYPE_ESP
                     default ESP_UTILS_CONF_MEM_GEN_ALLOC_ESP_CAPS_DEFAULT
@@ -177,7 +193,7 @@ menu "ESP Library Utils Configurations"
                     default 2 if ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_TYPE_MICROPYTHON
                     default 3 if ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_TYPE_CUSTOM
 
-                choice ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_ESP_CAPS
+                choice ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_ESP_CAPS_CHOICE
                     prompt "ESP memory caps"
                     depends on ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_TYPE_ESP
                     default ESP_UTILS_CONF_MEM_CXX_GLOB_ALLOC_ESP_CAPS_DEFAULT
