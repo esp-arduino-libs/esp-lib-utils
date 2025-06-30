@@ -5,6 +5,7 @@
 ### Bugfixes:
 
 * fix(log): update CXX log trace guard
+* fix(repo): forcing compiling CXX files with GNU++20 @martinroger (#13)
 
 ## v0.2.2 - 2025-06-27
 
