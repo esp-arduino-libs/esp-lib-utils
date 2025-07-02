@@ -8,7 +8,7 @@
 /* Library Version */
 #define ESP_UTILS_VERSION_MAJOR 0
 #define ESP_UTILS_VERSION_MINOR 2
-#define ESP_UTILS_VERSION_PATCH 2
+#define ESP_UTILS_VERSION_PATCH 3
 
 /* File `esp_utils_conf.h` */
 #define ESP_UTILS_CONF_VERSION_MAJOR 1

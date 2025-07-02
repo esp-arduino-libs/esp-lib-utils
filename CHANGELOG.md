@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v0.2.3 - 2025-07-03
+
+### Bugfixes:
+
+* fix(log): update CXX log trace guard
+
 ## v0.2.2 - 2025-06-27
 
 ### Enhancements:
