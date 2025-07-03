@@ -2,6 +2,10 @@
 
 ## v0.2.3 - 2025-07-03
 
+### Enhancements:
+
+* feat(log): update CXX log trace guard for compatibility with GNU++20 and below
+
 ### Bugfixes:
 
 * fix(log): update CXX log trace guard
