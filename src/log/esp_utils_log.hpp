@@ -8,12 +8,15 @@
 #include <algorithm>
 #include <cstdio>
 #include <type_traits>
-#include <memory>
 #include <utility>
+#include <string>
+#include <source_location>
 #include "esp_utils_log.h"
 
 namespace esp_utils {
 namespace detail {
+
+std::string parseFunctionName(const char *func_name);
 
 // Template for string NTTP parameters
 template <size_t N>
@@ -47,33 +50,50 @@ struct FixedString {
 };
 
 // Log trace RAII class
-template<FixedString file, int line, FixedString func>
+template <FixedString TAG>
 class log_trace_guard {
 public:
-    log_trace_guard()
-    {
-        const char *fname = esp_utils_log_extract_file_name(file.c_str());
-        printf("[D][" ESP_UTILS_LOG_TAG "][%s:%04d](%s): Enter\n", fname ? fname : "??", line, func.c_str());
-    }
-
-    explicit log_trace_guard(const void *this_ptr)
+    log_trace_guard(const void *this_ptr = nullptr, const std::source_location &loc = std::source_location::current())
         : _this_ptr(this_ptr)
     {
-        const char *fname = esp_utils_log_extract_file_name(file.c_str());
-        printf("[D][" ESP_UTILS_LOG_TAG "][%s:%04d](%s): (@%p) Enter\n", fname ? fname : "??", line, func.c_str(), _this_ptr);
+        _line = static_cast<int>(loc.line());
+        _func_name = parseFunctionName(loc.function_name());
+        if (_func_name.empty()) {
+            _func_name = "???";
+        }
+        _file_name = std::string(esp_utils_log_extract_file_name(loc.file_name()));
+        if (_file_name.empty()) {
+            _file_name = "???";
+        }
+
+        if (_this_ptr) {
+            ESP_UTILS_LOGD_IMPL_FUNC(
+                TAG.c_str(), "[%s:%04d](%s): (@%p) Enter", _file_name.c_str(), _line, _func_name.c_str(), _this_ptr
+            );
+        } else {
+            ESP_UTILS_LOGD_IMPL_FUNC(
+                TAG.c_str(), "[%s:%04d](%s): Enter", _file_name.c_str(), _line, _func_name.c_str()
+            );
+        }
     }
 
     ~log_trace_guard()
     {
-        const char *fname = esp_utils_log_extract_file_name(file.c_str());
         if (_this_ptr) {
-            printf("[D][" ESP_UTILS_LOG_TAG "][%s:%04d](%s): (@%p) Exit\n", fname ? fname : "??", line, func.c_str(), _this_ptr);
+            ESP_UTILS_LOGD_IMPL_FUNC(
+                TAG.c_str(), "[%s:%04d](%s): (@%p) Exit", _file_name.c_str(), _line, _func_name.c_str(), _this_ptr
+            );
         } else {
-            printf("[D][" ESP_UTILS_LOG_TAG "][%s:%04d](%s): Exit\n", fname ? fname : "??", line, func.c_str());
+            ESP_UTILS_LOGD_IMPL_FUNC(
+                TAG.c_str(), "[%s:%04d](%s): Exit", _file_name.c_str(), _line, _func_name.c_str()
+            );
         }
     }
 
 private:
+    int _line = 0;
+    std::string _func_name;
+    std::string _file_name;
     const void *_this_ptr = nullptr;
 };
 
@@ -85,29 +105,9 @@ private:
 #   define ESP_UTILS_LOG_TRACE_ENTER_WITH_THIS() ESP_UTILS_LOGD("(@%p) Enter", this)
 #   define ESP_UTILS_LOG_TRACE_EXIT_WITH_THIS()  ESP_UTILS_LOGD("(@%p) Exit", this)
 
-#   define ESP_UTILS_MAKE_FS(str) []{ constexpr esp_utils::detail::FixedString<sizeof(str)> s(str); return s; }()
-#   define ESP_UTILS_LOG_TRACE_GUARD() \
-    [[maybe_unused]] auto _log_trace_guard_ = [] { \
-        using namespace esp_utils::detail; \
-        constexpr auto __file = ESP_UTILS_MAKE_FS(__FILE__); \
-        constexpr auto __func = ESP_UTILS_MAKE_FS(__func__); \
-        std::unique_ptr<log_trace_guard<__file, __LINE__, __func>> _g; \
-        if constexpr (ESP_UTILS_CONF_LOG_LEVEL == ESP_UTILS_LOG_LEVEL_DEBUG) { \
-            _g = std::make_unique<log_trace_guard<__file, __LINE__, __func>>(); \
-        } \
-        return _g; \
-    }()
-#   define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() \
-    [[maybe_unused]] auto _log_trace_guard_ = [this] { \
-        using namespace esp_utils::detail; \
-        constexpr auto __file = ESP_UTILS_MAKE_FS(__FILE__); \
-        constexpr auto __func = ESP_UTILS_MAKE_FS(__func__); \
-        std::unique_ptr<log_trace_guard<__file, __LINE__, __func>> _g; \
-        if constexpr (ESP_UTILS_CONF_LOG_LEVEL == ESP_UTILS_LOG_LEVEL_DEBUG) { \
-            _g = std::make_unique<log_trace_guard<__file, __LINE__, __func>>(this); \
-        } \
-        return _g; \
-    }()
+#   define ESP_UTILS_LOG_MAKE_FS(str) []{ constexpr esp_utils::detail::FixedString<sizeof(str)> s(str); return s; }()
+#   define ESP_UTILS_LOG_TRACE_GUARD()           esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_{}
+#   define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_{this}
 #else
 #   define ESP_UTILS_LOG_TRACE_ENTER_WITH_THIS()
 #   define ESP_UTILS_LOG_TRACE_EXIT_WITH_THIS()

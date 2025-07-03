@@ -12,9 +12,26 @@
 
 using namespace esp_utils;
 
+class LogTestClass {
+public:
+    LogTestClass() = default;
+
+    void print()
+    {
+        ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS();
+
+        ESP_UTILS_LOGI("File: %s", __FILE__);
+        ESP_UTILS_LOGI("Line: %d", __LINE__);
+        ESP_UTILS_LOGI("Time: %s", __DATE__);
+    }
+};
+
 TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
 {
     ESP_UTILS_LOG_TRACE_GUARD();
+
+    LogTestClass log_test_class;
+    log_test_class.print();
 
     ESP_UTILS_LOGD("This is a debug message");
     ESP_UTILS_LOGI("This is an info message");
