@@ -17,7 +17,6 @@ endif()
 target_compile_options(${COMPONENT_LIB}
     PUBLIC
         -Wno-missing-field-initializers
-        $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++20>
 )
 
 if(NOT ESP_PLATFORM)
