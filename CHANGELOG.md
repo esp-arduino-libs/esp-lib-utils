@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v0.3.0 - 2025-07-24
+
+### Breaking Changes:
+
+* break(repo): update esp-idf version to >= 5.4
+* break(repo): update arduino-esp32 version to >= v3.2.0
+* break(repo): enable plugin registry (with `COMPILER_CXX_RTTI`) by default
+
+### Enhancements:
+
+* feat(more): add plugin registry
+
 ## v0.2.3 - 2025-07-03
 
 ### Enhancements:
