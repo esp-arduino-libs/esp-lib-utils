@@ -103,7 +103,7 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ret, fmt, ...) do { \
-            esp_err_t err = (x);                        \
+            esp_err_t _err_ = (x);                        \
             if (unlikely(err != ESP_OK)) {                          \
                 return ret;                              \
             }                                            \
@@ -310,7 +310,7 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ret, fmt, ...) do { \
-            esp_err_t err = (x);                        \
+            esp_err_t _err_ = (x);                        \
             if (unlikely(err != ESP_OK)) {                          \
                 ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
                 return ret;                              \
@@ -326,7 +326,7 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_GOTO(x, goto_tag, fmt, ...) do { \
-            esp_err_t err = (x);                        \
+            esp_err_t _err_ = (x);                        \
             if (unlikely((err) != ESP_OK)) {                   \
                 ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
                 goto goto_tag;                              \
@@ -341,7 +341,7 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_EXIT(x, fmt, ...) do { \
-            esp_err_t err = (x);                        \
+            esp_err_t _err_ = (x);                        \
             if (unlikely((err) != ESP_OK)) {                   \
                 ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
                 return;                           \

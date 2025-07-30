@@ -12,6 +12,10 @@
 
 * feat(more): add plugin registry
 
+### Bugfixes:
+
+* fix(check): rename 'err' to '__err__' to avoid name conflicts
+
 ## v0.2.3 - 2025-07-03
 
 ### Enhancements:
