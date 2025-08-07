@@ -10,37 +10,6 @@
 
 namespace esp_utils {
 
-template<typename T>
-class value_guard {
-public:
-    value_guard(T &value)
-        : ref_(value)
-        , origin_(value)
-    {}
-
-    ~value_guard()
-    {
-        if (!is_release_) {
-            ref_ = origin_;
-        }
-    }
-
-    void set(T value)
-    {
-        ref_ = value;
-    }
-
-    void release()
-    {
-        is_release_ = true;
-    }
-
-private:
-    T &ref_;
-    T origin_;
-    bool is_release_ = false;
-};
-
 template<typename T, typename... Args>
 class function_guard {
 public:
