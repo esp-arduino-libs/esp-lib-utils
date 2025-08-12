@@ -45,7 +45,7 @@
 
 |                 **Dependency**                  | **Version** |
 | ----------------------------------------------- | ----------- |
-| [esp-idf](https://github.com/espressif/esp-idf) | >= 5.1      |
+| [esp-idf](https://github.com/espressif/esp-idf) | >= 5.4      |
 
 #### Adding to Project
 
@@ -73,7 +73,7 @@ When developing with esp-idf, users can configure `esp-lib-utils` through the me
 
 |                       **Dependency**                        | **Version** |
 | ----------------------------------------------------------- | ----------- |
-| [arduino-esp32](https://github.com/espressif/arduino-esp32) | >= v3.0.0   |
+| [arduino-esp32](https://github.com/espressif/arduino-esp32) | >= v3.2.0   |
 
 #### Installing the Library
 

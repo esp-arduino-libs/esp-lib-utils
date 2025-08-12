@@ -226,5 +226,13 @@ menu "ESP Library Utils Configurations"
                     default ""
             endif # ESP_UTILS_CONF_MEM_ENABLE_CXX_GLOB_ALLOC
         endmenu
+
+        config ESP_UTILS_CONF_PLUGIN_SUPPORT
+            bool "Plugin support"
+            default y
+            select COMPILER_CXX_RTTI
+            help
+                If enabled, the driver will enable `COMPILER_CXX_RTTI` to support plugin mechanism.
+
     endif # ESP_UTILS_CONF_FILE_SKIP
 endmenu

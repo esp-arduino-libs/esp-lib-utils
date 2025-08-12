@@ -20,10 +20,18 @@
 #include "memory/esp_utils_mem.h"
 
 #if defined(__cplusplus)
-/* Thread */
-#include "thread/esp_utils_thread.hpp"
+
 /* Log */
 #include "log/esp_utils_log.hpp"
+
+/* Thread */
+#include "thread/esp_utils_thread.hpp"
+
 /* More */
-#include "more/esp_utils_more.hpp"
+#include "more/esp_utils_value_guard.hpp"
+#include "more/esp_utils_function_guard.hpp"
+#if ESP_UTILS_CONF_PLUGIN_SUPPORT
+#   include "more/esp_utils_plugin_registry.hpp"
+#endif
+
 #endif // defined(__cplusplus)

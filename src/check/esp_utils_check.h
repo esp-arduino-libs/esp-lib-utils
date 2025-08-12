@@ -103,8 +103,7 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ret, fmt, ...) do { \
-            esp_err_t err = (x);                        \
-            if (unlikely(err != ESP_OK)) {                          \
+            if (unlikely((x) != ESP_OK)) {                          \
                 return ret;                              \
             }                                            \
         } while(0)
@@ -310,9 +309,9 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_RETURN(x, ret, fmt, ...) do { \
-            esp_err_t err = (x);                        \
-            if (unlikely(err != ESP_OK)) {                          \
-                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
+            esp_err_t _err_ = (x);                        \
+            if (unlikely(_err_ != ESP_OK)) {                          \
+                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(_err_)); \
                 return ret;                              \
             }                                            \
         } while(0)
@@ -326,9 +325,9 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_GOTO(x, goto_tag, fmt, ...) do { \
-            esp_err_t err = (x);                        \
-            if (unlikely((err) != ESP_OK)) {                   \
-                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
+            esp_err_t _err_ = (x);                        \
+            if (unlikely(_err_ != ESP_OK)) {                   \
+                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(_err_)); \
                 goto goto_tag;                              \
             }                                               \
         } while(0)
@@ -341,9 +340,9 @@
  * @param ... Additional arguments for the format string
  */
 #define ESP_UTILS_CHECK_ERROR_EXIT(x, fmt, ...) do { \
-            esp_err_t err = (x);                        \
-            if (unlikely((err) != ESP_OK)) {                   \
-                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(err)); \
+            esp_err_t _err_ = (x);                        \
+            if (unlikely(_err_ != ESP_OK)) {                   \
+                ESP_UTILS_LOGE(fmt " [%s]", ##__VA_ARGS__, esp_err_to_name(_err_)); \
                 return;                           \
             }                                     \
         } while(0)
