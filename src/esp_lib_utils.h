@@ -24,6 +24,9 @@
 /* Log */
 #include "log/esp_utils_log.hpp"
 
+/* Profiler */
+#include "profiler/esp_utils_time_profiler.hpp"
+
 /* Thread */
 #include "thread/esp_utils_thread.hpp"
 

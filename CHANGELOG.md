@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v0.3.1 - 2025-10-21
+
+### Enhancements:
+
+* feat(profiler): add time profiler module
+
+### Bugfixes:
+
+* fix(repo): fix build error on idf v6.0
+
 ## v0.3.0 - 2025-07-24
 
 ### Breaking Changes:
