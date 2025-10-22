@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <thread>
 #include "esp_utils_time_profiler.hpp"
 
 namespace esp_utils {
