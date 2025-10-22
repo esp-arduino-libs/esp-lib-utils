@@ -34,7 +34,7 @@ struct ThreadConfig {
     int       core_id = THREAD_CONFIG_CORE_DEFAULT;
     size_t   priority = THREAD_CONFIG_PRIO_DEFAULT;
     size_t stack_size = THREAD_CONFIG_STACK_SIZE_DEFAULT;
-#if !defined(ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID)
+#if !ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID
     bool stack_in_ext = false;
 #endif
 };

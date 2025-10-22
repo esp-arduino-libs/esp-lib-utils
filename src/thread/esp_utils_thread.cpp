@@ -20,14 +20,14 @@ void ThreadConfig::dump() const
         "\t-core_id(%d)\n"
         "\t-priority(%d)\n"
         "\t-stack_size(%d)\n"
-#if !defined(ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID)
+#if !ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID
         "\t-stack_in_ext(%s)\n"
 #endif
         , name
         , core_id
         , static_cast<int>(priority)
         , static_cast<int>(stack_size)
-#if !defined(ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID)
+#if !ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID
         , stack_in_ext ? "true" : "false"
 #endif
     );
@@ -49,7 +49,7 @@ thread_config_guard::thread_config_guard(const ThreadConfig &config)
     new_cfg.prio = config.priority;
     new_cfg.inherit_cfg = false;
     new_cfg.pin_to_core = config.core_id;
-#if !defined(ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID)
+#if !ESP_UTILS_THREAD_CONFIG_STACK_CAPS_INVALID
     new_cfg.stack_alloc_caps = (config.stack_in_ext ? MALLOC_CAP_SPIRAM : MALLOC_CAP_INTERNAL) | MALLOC_CAP_8BIT;
 #endif
 
