@@ -477,6 +477,150 @@ public:
     }
 
     /**
+     * @brief Release (reset) the instance for the first plugin matching the given name
+     *
+     * @param[in] name Plugin name
+     * @return true if a non-null instance was found and released; false otherwise
+     */
+    static bool releaseInstance(const std::string &name)
+    {
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        for (auto &plugin : plugins) {
+            if (plugin.name == name) {
+                if (plugin.instance) {
+                    plugin.instance.reset();
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Release (reset) instances for all plugins matching the given name
+     *
+     * @param[in] name Plugin name
+     * @return Number of instances actually released (were non-null)
+     */
+    static size_t releaseAllInstancesByName(const std::string &name)
+    {
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        size_t released_count = 0;
+        for (auto &plugin : plugins) {
+            if (plugin.name == name && plugin.instance) {
+                plugin.instance.reset();
+                ++released_count;
+            }
+        }
+        return released_count;
+    }
+
+    /**
+     * @brief Release (reset) the instance for the first plugin of specified type
+     *
+     * @tparam PluginType Specific plugin type
+     * @return true if a non-null instance was found and released; false otherwise
+     */
+    template <typename PluginType>
+    static bool releaseInstanceByType()
+    {
+        static_assert(std::is_base_of_v<T, PluginType>, "PluginType must inherit from base type T");
+
+        auto type_key = std::type_index(typeid(PluginType));
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        for (auto &plugin : plugins) {
+            if (plugin.type_idx == type_key) {
+                if (plugin.instance) {
+                    plugin.instance.reset();
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Release (reset) instances for all plugins of specified type
+     *
+     * @tparam PluginType Specific plugin type
+     * @return Number of instances actually released (were non-null)
+     */
+    template <typename PluginType>
+    static size_t releaseAllInstancesByType()
+    {
+        static_assert(std::is_base_of_v<T, PluginType>, "PluginType must inherit from base type T");
+
+        auto type_key = std::type_index(typeid(PluginType));
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        size_t released_count = 0;
+        for (auto &plugin : plugins) {
+            if (plugin.type_idx == type_key && plugin.instance) {
+                plugin.instance.reset();
+                ++released_count;
+            }
+        }
+        return released_count;
+    }
+
+    /**
+     * @brief Release (reset) the specific instance by name and type (first match only)
+     *
+     * @tparam PluginType Specific plugin type
+     * @param[in] name Plugin name
+     * @return true if a non-null instance was found and released; false otherwise
+     */
+    template <typename PluginType>
+    static bool releaseSpecificInstance(const std::string &name)
+    {
+        static_assert(std::is_base_of_v<T, PluginType>, "PluginType must inherit from base type T");
+
+        auto type_key = std::type_index(typeid(PluginType));
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        for (auto &plugin : plugins) {
+            if (plugin.name == name && plugin.type_idx == type_key) {
+                if (plugin.instance) {
+                    plugin.instance.reset();
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Release (reset) all instances for all registered plugins
+     *
+     * @return Number of instances actually released (were non-null)
+     */
+    static size_t releaseAllInstances()
+    {
+        std::lock_guard<std::recursive_mutex> lock(getMutex());
+        auto &plugins = getPlugins();
+
+        size_t released_count = 0;
+        for (auto &plugin : plugins) {
+            if (plugin.instance) {
+                plugin.instance.reset();
+                ++released_count;
+            }
+        }
+        return released_count;
+    }
+
+    /**
      * @brief Register a plugin with factory function
      *
      * @tparam PluginType Specific plugin type to register
