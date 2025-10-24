@@ -57,7 +57,7 @@ public:
     using Clock = std::chrono::high_resolution_clock;
     using TimePoint = std::chrono::time_point<Clock>;
 
-    static TimeProfiler &instance();
+    static TimeProfiler &get_instance();
 
     // ---------- 配置 ----------
     void set_format_options(const FormatOptions &options);
@@ -111,12 +111,16 @@ private:
     std::vector<Node *> sorted_children(Node *node) const;
 };
 
-class TimeProfileScope {
+class TimeProfilerScope {
 public:
-    explicit TimeProfileScope(const std::string &name);
-    ~TimeProfileScope();
+    explicit TimeProfilerScope(const std::string &name);
+    ~TimeProfilerScope();
 };
 
 } // namespace esp_utils
 
-#define ESP_UTILS_TIME_PROFILE_SCOPE(name) esp_utils::TimeProfileScope _profile_scope_##__LINE__(name)
+#define ESP_UTILS_TIME_PROFILER_SCOPE(name) esp_utils::TimeProfilerScope _profile_scope_##__LINE__(name)
+
+#define ESP_UTILS_TIME_PROFILER_START_EVENT(name) esp_utils::TimeProfiler::get_instance().start_event(name)
+
+#define ESP_UTILS_TIME_PROFILER_END_EVENT(name) esp_utils::TimeProfiler::get_instance().end_event(name)

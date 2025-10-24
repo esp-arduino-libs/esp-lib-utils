@@ -13,7 +13,7 @@
 
 namespace esp_utils {
 
-TimeProfiler &TimeProfiler::instance()
+TimeProfiler &TimeProfiler::get_instance()
 {
     static TimeProfiler inst;
     return inst;
@@ -299,13 +299,13 @@ std::vector<TimeProfiler::Node *> TimeProfiler::sorted_children(Node *node) cons
     return result;
 }
 
-TimeProfileScope::TimeProfileScope(const std::string &name)
+TimeProfilerScope::TimeProfilerScope(const std::string &name)
 {
-    TimeProfiler::instance().enter_scope(name);
+    TimeProfiler::get_instance().enter_scope(name);
 }
-TimeProfileScope::~TimeProfileScope()
+TimeProfilerScope::~TimeProfilerScope()
 {
-    TimeProfiler::instance().leave_scope();
+    TimeProfiler::get_instance().leave_scope();
 }
 
 } // namespace esp_utils

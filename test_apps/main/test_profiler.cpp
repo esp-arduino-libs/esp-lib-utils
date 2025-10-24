@@ -18,30 +18,30 @@ using namespace esp_utils;
 
 void do_test(size_t sleep_time)
 {
-    ESP_UTILS_TIME_PROFILE_SCOPE("do_test");
+    ESP_UTILS_TIME_PROFILER_SCOPE("do_test");
     std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
 }
 
 void work_task()
 {
-    ESP_UTILS_TIME_PROFILE_SCOPE("work_task");
+    ESP_UTILS_TIME_PROFILER_SCOPE("work_task");
     do_test(12 + rand() % 8);
 }
 
 std::thread async_task(int index)
 {
     std::string event_name = "cross_thread_event";
-    TimeProfiler::instance().start_event(event_name);
+    TimeProfiler::get_instance().start_event(event_name);
     return std::thread([event_name, index] {
-        ESP_UTILS_TIME_PROFILE_SCOPE("async_task_" + std::to_string(index));
+        ESP_UTILS_TIME_PROFILER_SCOPE("async_task_" + std::to_string(index));
         do_test(40);
-        TimeProfiler::instance().end_event(event_name);
+        TimeProfiler::get_instance().end_event(event_name);
     });
 }
 
 TEST_CASE("Test profiler functions on cpp", "[utils][plugin][CPP]")
 {
-    auto &prof = TimeProfiler::instance();
+    auto &prof = TimeProfiler::get_instance();
     TimeProfiler::FormatOptions opt;
     opt.use_unicode = true;
     opt.use_color = true;          // 开启颜色高亮（>50%红色，>20%黄色，>5%青色）
@@ -58,7 +58,7 @@ TEST_CASE("Test profiler functions on cpp", "[utils][plugin][CPP]")
     std::vector<std::thread> workers;
     workers.reserve(5);
     for (int i = 0; i < 5; ++i) {
-        ESP_UTILS_TIME_PROFILE_SCOPE("main_iteration");
+        ESP_UTILS_TIME_PROFILER_SCOPE("main_iteration");
         work_task();
         workers.emplace_back(async_task(i));
     }
@@ -67,7 +67,7 @@ TEST_CASE("Test profiler functions on cpp", "[utils][plugin][CPP]")
             t.join();
         }
     }
-    TimeProfiler::instance().report();
+    TimeProfiler::get_instance().report();
 
-    TimeProfiler::instance().clear();
+    TimeProfiler::get_instance().clear();
 }
