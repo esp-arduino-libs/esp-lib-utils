@@ -1,10 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: CC0-1.0
  */
 #include "unity.h"
-#define ESP_UTILS_LOG_TAG "TestC"
+#define ESP_UTILS_LOG_TAG "TestC::DefaultTag"
 #include "esp_lib_utils.h"
 #include "esp_utils_helpers.h"
 
@@ -16,6 +16,11 @@ TEST_CASE("Test log functions on C", "[utils][log][C]")
     ESP_UTILS_LOGI("This is an info message");
     ESP_UTILS_LOGW("This is a warning message");
     ESP_UTILS_LOGE("This is an error message");
+
+    ESP_UTILS_TAG_LOGD("TestC::CustomTag", "This is a debug message");
+    ESP_UTILS_TAG_LOGI("TestC::CustomTag", "This is an info message");
+    ESP_UTILS_TAG_LOGW("TestC::CustomTag", "This is a warning message");
+    ESP_UTILS_TAG_LOGE("TestC::CustomTag", "This is an error message");
 
     ESP_UTILS_LOG_TRACE_EXIT();
 }

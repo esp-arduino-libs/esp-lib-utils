@@ -6,7 +6,7 @@
 #include <thread>
 #include <memory>
 #include "unity.h"
-#define ESP_UTILS_LOG_TAG "TestCpp"
+#define ESP_UTILS_LOG_TAG "TestCpp::DefaultTag"
 #include "esp_lib_utils.h"
 #include "esp_utils_helpers.h"
 
@@ -37,6 +37,11 @@ TEST_CASE("Test log functions on cpp", "[utils][log][CPP]")
     ESP_UTILS_LOGI("This is an info message");
     ESP_UTILS_LOGW("This is a warning message");
     ESP_UTILS_LOGE("This is an error message");
+
+    ESP_UTILS_TAG_LOGD("TestCpp::CustomTag", "This is a debug message");
+    ESP_UTILS_TAG_LOGI("TestCpp::CustomTag", "This is an info message");
+    ESP_UTILS_TAG_LOGW("TestCpp::CustomTag", "This is a warning message");
+    ESP_UTILS_TAG_LOGE("TestCpp::CustomTag", "This is an error message");
 }
 
 #define MALLOC_GOOD_SIZE    (1 * 1024)

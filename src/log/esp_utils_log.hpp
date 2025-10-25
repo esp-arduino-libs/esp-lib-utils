@@ -173,14 +173,31 @@ private:
 // The following macros are deprecated, please use `ESP_UTILS_LOG_TRACE_GUARD()` instead
 #   define ESP_UTILS_LOG_TRACE_ENTER_WITH_THIS() ESP_UTILS_LOGD("(@%p) Enter", this)
 #   define ESP_UTILS_LOG_TRACE_EXIT_WITH_THIS()  ESP_UTILS_LOGD("(@%p) Exit", this)
-
 #   if ESP_UTILS_LOG_CXX20_SUPPORT
 #       define ESP_UTILS_LOG_MAKE_FS(str) []{ constexpr esp_utils::detail::FixedString<sizeof(str)> s(str); return s; }()
-#       define ESP_UTILS_LOG_TRACE_GUARD()           esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_{}
-#       define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_{this}
+#       if defined(ESP_UTILS_LOG_TAG)
+#           define ESP_UTILS_LOG_TRACE_GUARD()           \
+                esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_## __LINE__{};
+#           define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() \
+                esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG)> _log_trace_guard_## __LINE__{this};
+#       else
+#           define ESP_UTILS_LOG_TRACE_GUARD()           \
+                esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG_DEFAULT)> _log_trace_guard_## __LINE__{};
+#           define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() \
+                esp_utils::detail::log_trace_guard<ESP_UTILS_LOG_MAKE_FS(ESP_UTILS_LOG_TAG_DEFAULT)> _log_trace_guard_## __LINE__{this};
+#       endif
 #   else
-#       define ESP_UTILS_LOG_TRACE_GUARD()           esp_utils::detail::log_trace_guard _log_trace_guard_{ESP_UTILS_LOG_TAG, __func__, __FILE__, __LINE__}
-#       define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() esp_utils::detail::log_trace_guard _log_trace_guard_{ESP_UTILS_LOG_TAG, __func__, __FILE__, __LINE__, this}
+#       if defined(ESP_UTILS_LOG_TAG)
+#           define ESP_UTILS_LOG_TRACE_GUARD()           \
+                esp_utils::detail::log_trace_guard _log_trace_guard_## __LINE__{ESP_UTILS_LOG_TAG, __func__, __FILE__, __LINE__};
+#           define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() \
+                esp_utils::detail::log_trace_guard _log_trace_guard_## __LINE__{ESP_UTILS_LOG_TAG, __func__, __FILE__, __LINE__, this}
+#       else
+#           define ESP_UTILS_LOG_TRACE_GUARD()           \
+                esp_utils::detail::log_trace_guard _log_trace_guard_## __LINE__{ESP_UTILS_LOG_TAG_DEFAULT, __func__, __FILE__, __LINE__};
+#           define ESP_UTILS_LOG_TRACE_GUARD_WITH_THIS() \
+                esp_utils::detail::log_trace_guard _log_trace_guard_## __LINE__{ESP_UTILS_LOG_TAG_DEFAULT, __func__, __FILE__, __LINE__, this};
+#       endif
 #   endif
 #else
 #   define ESP_UTILS_LOG_TRACE_ENTER_WITH_THIS()
